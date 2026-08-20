@@ -13,5 +13,10 @@
         public string Name { get; private set; }
         public int Code { get; private set; }
 
+        public override bool Equals(object? obj)
+        {
+            return obj is Currency currency &&
+                   Code == currency.Code;
+        }
     }
 }
