@@ -1,10 +1,17 @@
-﻿namespace PersonalFinanceApi
+﻿namespace PersonalFinance.Domain
 {
     public class Currency
     {
         public Currency(string name, int code)
         {
             Id = Guid.NewGuid();
+            Name = name;
+            Code = code;
+        }
+
+        public Currency(Guid id, string name, int code)
+        {
+            Id = id;
             Name = name;
             Code = code;
         }
@@ -18,5 +25,12 @@
             return obj is Currency currency &&
                    Code == currency.Code;
         }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Code);
+        }
+
+
     }
 }

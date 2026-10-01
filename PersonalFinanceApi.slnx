@@ -1,4 +1,8 @@
 <Solution>
   <Folder Name="/Solution Items/" />
+  <Project Path="PersonalFinance.Application/PersonalFinance.Application.csproj" />
+  <Project Path="PersonalFinance.Domain/PersonalFinance.Domain.csproj" />
+  <Project Path="PersonalFinance.Infrastructure/PersonalFinance.Infrastructure.csproj" />
   <Project Path="PersonalFinanceApi/PersonalFinanceApi.csproj" />
+  <Project Path="PersonalFinanceApiTest/PersonalFinanceApiTest.csproj" Id="cba6efc7-a8b4-4447-a343-574c9d3f99a4" />
 </Solution>
