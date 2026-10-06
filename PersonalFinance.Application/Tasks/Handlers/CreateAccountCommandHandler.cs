@@ -10,15 +10,18 @@ namespace PersonalFinance.Application.Tasks.Handlers
     {
         private readonly ICurrencyRepository _curencyRepository;
         private readonly IAccountRepository _accountRepository;
+        private readonly ICurrentUser _currentUser;
         private readonly IUnitOfWork _unitOfWork;
 
 
         public CreateAccountCommandHandler(ICurrencyRepository curencyRepository, 
             IAccountRepository accountRepository,
+            ICurrentUser currentUser,
             IUnitOfWork unitOfWork)
         {
             _curencyRepository = curencyRepository;
             _accountRepository = accountRepository;
+            _currentUser = currentUser;
             _unitOfWork = unitOfWork;
         }
 
@@ -30,7 +33,7 @@ namespace PersonalFinance.Application.Tasks.Handlers
             {
                 throw new CurrencyNotFoundException(currencyId);
             }
-            Account newAccount = new Account(request.Account.Name, currency);
+            Account newAccount = new Account(request.Account.Name, currency, _currentUser.UserId);
             await _accountRepository.AddAccountAsync(newAccount);
             var result = await _unitOfWork.SaveChangesAsync();
             return new AccountItemDto(newAccount.Id,

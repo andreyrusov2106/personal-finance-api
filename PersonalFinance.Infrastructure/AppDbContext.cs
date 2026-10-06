@@ -11,6 +11,7 @@ namespace PersonalFinance.Infrastructure
 
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Currency> Currencies { get; set; }
+        public DbSet<User> Users { get; set; }
 
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -52,6 +53,11 @@ namespace PersonalFinance.Infrastructure
                   .WithMany()
                   .HasForeignKey(a => a.CurrencyId)
                   .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne<User>(a => a.User)
+                  .WithMany(u=>u.Accounts)
+                  .HasForeignKey(a => a.UserId)
+                  .OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<Currency>(entity =>
@@ -59,6 +65,15 @@ namespace PersonalFinance.Infrastructure
                 entity.HasKey(s => s.Id);
                 entity.Property(s => s.Name).IsRequired().HasMaxLength(30); ;
                 entity.HasIndex(s => s.Code).IsUnique();
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.HasKey(s => s.Id);
+                entity.Property(s => s.Name).IsRequired().HasMaxLength(200);
+                entity.HasIndex(s => s.Login).IsUnique();
+                entity.Property(s => s.PasswordHash).IsRequired().HasMaxLength(2000);
+                entity.Property(s => s.Role).IsRequired().HasMaxLength(200);
             });
 
             modelBuilder.Entity<Currency>().HasData(

@@ -1,13 +1,15 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
-using PersonalFinanceApi;
-using PersonalFinance.Infrastructure.Concurency;
-using System.Text;
 using PersonalFinance.Application.Interfaces;
+using PersonalFinance.Domain;
+using PersonalFinance.Infrastructure;
+using PersonalFinance.Infrastructure.Concurency;
 using PersonalFinance.Infrastructure.Options;
 using PersonalFinance.Infrastructure.Repositories;
-using PersonalFinance.Infrastructure;
+using PersonalFinanceApi;
+using System.Text;
 
 
 public partial class Program
@@ -59,10 +61,14 @@ public partial class Program
         builder.Services.AddScoped<IAccountRepository, AccountRepository>();
         builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
         builder.Services.AddScoped<ICurrencyRepository, CurrencyRepository>();
+        builder.Services.AddScoped<IUserRepository, UserRepository>();
+        builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
         builder.Services.AddScoped<IUnitOfWork>(sp =>
             sp.GetRequiredService<AppDbContext>());
         builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(IUnitOfWork).Assembly));
+        builder.Services.AddScoped<ICurrentUser, CurrentUser>();
+        builder.Services.AddScoped<ITokenService, TokenService>();
 
         builder.Services
             .AddAuthentication()

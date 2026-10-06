@@ -27,5 +27,19 @@ namespace PersonalFinanceApi.Controllers
 
             return Ok(token);
         }
+
+
+        // POST /api/auth/register
+        [HttpPost("/api/auth/register")]
+        [ProducesResponseType(typeof(Guid), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
+        public async Task<ActionResult<Guid>> Register([FromBody] RegisterRequestDto registerRequestDto)
+
+        {
+            var command = new RegisterCommand(registerRequestDto);
+            var userId = await _mediator.Send(command);
+
+            return Created("", userId);
+        }
     }
 }

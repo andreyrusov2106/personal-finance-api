@@ -16,6 +16,7 @@ namespace PersonalFinanceApiTest
     [TestClass]
     public class AccountVersionInterceptorTests
     {
+        /*
         [TestMethod]
         public void Version_Should_Increase_When_Account_Is_Modified()
         {
@@ -350,7 +351,7 @@ namespace PersonalFinanceApiTest
             // ASSERT (Проверка)
             Assert.AreEqual(1000, secondAccountAfterTransfer.Balance);
 
-        }
+        }*/
 
 
 

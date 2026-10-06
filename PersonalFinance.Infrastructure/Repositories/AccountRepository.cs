@@ -33,12 +33,9 @@ namespace PersonalFinance.Infrastructure.Repositories
         public async Task AddAccountAsync(Account account)
         {
             _context.Entry(account.Currency).State = EntityState.Unchanged;
-            Console.WriteLine($"Repository context: {_context.GetHashCode()}");
             await _context.Accounts.AddAsync(account);
             var entry = _context.Entry(account);
 
-
-            Console.WriteLine($"Account state: {entry.State}");
         }
 
         public void DeleteAccount(Account account)

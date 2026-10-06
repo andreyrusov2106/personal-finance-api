@@ -4,14 +4,18 @@ namespace PersonalFinance.Domain
 {
     public class Account
     {
-        public Account(string name, Currency currency)
+        public Account(string name, Currency currency, Guid userId)
         {
+            if (userId == Guid.Empty)
+                throw new ArgumentException("UserId cannot be empty.", nameof(userId));
+
             Id = Guid.NewGuid();
             Name = name;
             Balance = 0;
             Currency = currency;
             CurrencyId = currency.Id;
             CreatedAt = DateTime.UtcNow;
+            UserId = userId;
         }
         private Account()
         {
@@ -25,6 +29,8 @@ namespace PersonalFinance.Domain
         public Currency Currency { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime? ClosedAt { get; private set; }
+        public Guid UserId { get; private set; }
+        public User User { get; private set; }
 
         public void Deposit(decimal Amount)
         {
