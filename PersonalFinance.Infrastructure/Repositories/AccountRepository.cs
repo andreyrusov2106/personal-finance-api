@@ -14,18 +14,19 @@ namespace PersonalFinance.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Account>> GetAllAsync()
+        public async Task<IEnumerable<Account>> GetAllAsync(Guid userId)
         {
             return await _context.Accounts
+               .Where(a=>a.UserId==userId)
                .AsNoTracking()
                .Include(a => a.Currency)
                .ToListAsync();
         }
 
-        public async Task<Account?> GetAccountAsync(Guid id)
+        public async Task<Account?> GetAccountAsync(Guid id, Guid userId)
         {
             return await _context.Accounts
-                //.AsNoTracking()
+                .Where(a => a.UserId == userId)
                 .Include(a => a.Currency)
                 .FirstOrDefaultAsync(a => a.Id == id);
         }

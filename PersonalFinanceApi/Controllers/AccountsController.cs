@@ -23,12 +23,14 @@ namespace PersonalFinanceApi.Controllers
         [ProducesResponseType(typeof(IEnumerable<AccountItemDto>), StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<AccountItemDto>>> GetAll()
         {
+            var currentUser= new CurrentUser();
             var query = new GetAllAccountsQuery();
             var tasks = await _mediator.Send(query);
             return Ok(tasks);
         }
 
         // GET: api/account(id)
+        [Authorize]
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(AccountItemDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -41,6 +43,7 @@ namespace PersonalFinanceApi.Controllers
         }
 
         // PUT: api/accounts(id)
+        [Authorize]
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(AccountItemDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -71,6 +74,7 @@ namespace PersonalFinanceApi.Controllers
         }
 
         // DELETE: api/accounts/{id}
+        [Authorize]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -84,6 +88,7 @@ namespace PersonalFinanceApi.Controllers
 
 
         // POST /api/accounts/{id}/deposit
+        [Authorize]
         [HttpPost("{id}/deposit")]
         [ProducesResponseType(typeof(AccountItemDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -99,6 +104,7 @@ namespace PersonalFinanceApi.Controllers
         }
 
         // POST /api/accounts/{id}/withdraw
+        [Authorize]
         [HttpPost("{id}/withdraw")]
         [ProducesResponseType(typeof(AccountItemDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]

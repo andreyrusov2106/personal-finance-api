@@ -11,18 +11,22 @@ namespace PersonalFinance.Application.Tasks.Handlers
         private readonly IAccountRepository _repository;
         private readonly IUnitOfWork _unitOfWork;
 
+        private readonly ICurrentUser _currentUser;
+
         public CloseAccountCommandHandler(IAccountRepository accountRepository,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            ICurrentUser currentUser)
         {
             _repository = accountRepository;
             _unitOfWork = unitOfWork;
+            _currentUser = currentUser;
         }
 
         public async Task<AccountItemDto> Handle(
             CloseAccountCommand request,
             CancellationToken cancellationToken)
         {
-            var account = await _repository.GetAccountAsync(request.accountId);
+            var account = await _repository.GetAccountAsync(request.accountId, _currentUser.UserId);
 
             if (account == null)
                 throw new AccountNotFoundException(request.accountId);

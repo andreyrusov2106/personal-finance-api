@@ -40,7 +40,7 @@ namespace PersonalFinance.Application.Tasks.Handlers
                 throw new InvalidCredentionalsException();
 
 
-            return _tokenService.CreateToken(user.Id.ToString(), user.Login, user.Name);
+            return _tokenService.CreateToken(user.Id.ToString(), user.Role, user.Name);
 
         }
     }
