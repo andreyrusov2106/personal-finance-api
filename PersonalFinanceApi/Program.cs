@@ -25,6 +25,8 @@ public partial class Program
         builder.Services.AddProblemDetails();
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         builder.Services.AddOpenApi();
+        builder.Services.AddHttpContextAccessor();
+        builder.Services.AddScoped<ICurrentUser, CurrentUser>();
         builder.Services.AddScoped<AccountVersionInterceptor>();
 
         builder.Services.AddDbContext<AppDbContext>((serviceProvider, options) =>
