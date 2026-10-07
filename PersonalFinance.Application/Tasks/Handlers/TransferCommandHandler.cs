@@ -10,11 +10,15 @@ namespace PersonalFinance.Application.Tasks.Handlers
         private readonly IAccountRepository _repository;
         private readonly IUnitOfWork _unitOfWork;
 
+        private readonly ICurrentUser _currentUser;
+
         public TransferCommandHandler(IAccountRepository accountRepository,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            ICurrentUser currentUser)
         {
             _repository = accountRepository;
             _unitOfWork = unitOfWork;
+            _currentUser = currentUser;
         }
         public async Task Handle(TransferCommand request, CancellationToken cancellationToken)
         {
@@ -24,9 +28,9 @@ namespace PersonalFinance.Application.Tasks.Handlers
             if (request.Amount <= 0)
                 throw new InvalidTransferAmountException(request.Amount);
 
-            var fromAccount = await _repository.GetAccountAsync(request.FromAccountId);
+            var fromAccount = await _repository.GetAccountAsync(request.FromAccountId, _currentUser.UserId);
 
-            var toAccount = await _repository.GetAccountAsync(request.ToAccountId);
+            var toAccount = await _repository.GetAccountAsync(request.ToAccountId, _currentUser.UserId);
 
             if (fromAccount == null)
                 throw new AccountNotFoundException(request.FromAccountId);

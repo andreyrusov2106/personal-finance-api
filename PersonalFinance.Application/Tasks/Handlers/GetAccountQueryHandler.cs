@@ -10,16 +10,20 @@ namespace PersonalFinance.Application.Tasks.Handlers
     {
         private readonly IAccountRepository _repository;
 
-        public GetAccountQueryHandler(IAccountRepository repository)
+        private readonly ICurrentUser _currentUser;
+
+        public GetAccountQueryHandler(IAccountRepository repository,
+            ICurrentUser currentUser)
         {
             _repository = repository;
+            _currentUser = currentUser;
         }
 
         public async Task<AccountItemDto?> Handle(
             GetAccountQuery request,
             CancellationToken cancellationToken)
         {
-            var account = await _repository.GetAccountAsync(request.Id);
+            var account = await _repository.GetAccountAsync(request.Id, _currentUser.UserId);
 
             if (account == null)
                 throw new AccountNotFoundException(request.Id);
