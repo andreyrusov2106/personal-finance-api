@@ -9,6 +9,7 @@ using PersonalFinance.Infrastructure.Concurency;
 using PersonalFinance.Infrastructure.Options;
 using PersonalFinance.Infrastructure.Repositories;
 using PersonalFinanceApi;
+using PersonalFinanceApi.Exceptions;
 using System.Text;
 
 
@@ -70,6 +71,7 @@ public partial class Program
     cfg.RegisterServicesFromAssembly(typeof(IUnitOfWork).Assembly));
         builder.Services.AddScoped<ICurrentUser, CurrentUser>();
         builder.Services.AddScoped<ITokenService, TokenService>();
+        builder.Services.AddSingleton<IExceptionMapper, ApiExceptionMapper>();
 
         builder.Services
             .AddAuthentication()

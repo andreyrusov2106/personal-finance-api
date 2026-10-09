@@ -23,7 +23,6 @@ namespace PersonalFinanceApi.Controllers
         [ProducesResponseType(typeof(IEnumerable<AccountItemDto>), StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<AccountItemDto>>> GetAll()
         {
-            var currentUser= new CurrentUser();
             var query = new GetAllAccountsQuery();
             var tasks = await _mediator.Send(query);
             return Ok(tasks);
@@ -138,6 +137,22 @@ namespace PersonalFinanceApi.Controllers
 
             });
         }
+
+        [Authorize]
+        [HttpPost("{fromAccountId}/transfer")]
+        public async Task<ActionResult> TransferAccount(
+        Guid fromAccountId,
+        [FromBody] TransferAccountDto transferAccountDto)
+            {
+                var command = new TransferCommand(
+                    fromAccountId,
+                    transferAccountDto.ToAccountId,
+                    transferAccountDto.Amount);
+
+                await _mediator.Send(command);
+
+                return NoContent();
+            }
 
 
 

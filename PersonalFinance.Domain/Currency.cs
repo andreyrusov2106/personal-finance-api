@@ -2,6 +2,10 @@
 {
     public class Currency
     {
+        public Currency()
+        {
+        }
+
         public Currency(string name, int code)
         {
             Id = Guid.NewGuid();

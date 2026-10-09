@@ -32,6 +32,15 @@ namespace PersonalFinanceApiTest
                     options.AddInterceptors(
                         serviceProvider.GetRequiredService<AccountVersionInterceptor>());
                 });
+
+                var serviceProvider = services.BuildServiceProvider();
+
+                using var scope = serviceProvider.CreateScope();
+
+                var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+                db.Database.EnsureDeleted();
+                db.Database.Migrate();
             });
         }
     }
