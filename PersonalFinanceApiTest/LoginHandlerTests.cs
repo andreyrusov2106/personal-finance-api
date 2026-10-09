@@ -72,7 +72,7 @@ namespace PersonalFinanceApiTest
 
             RegisterCommandHandler registerCommandHandler = new RegisterCommandHandler(userRepository, passwordHasher, context);
 
-            RegisterRequestDto registerRequestDto = new RegisterRequestDto("testuser", "Secret123!", "Test User");
+            RegisterRequestDto registerRequestDto = new RegisterRequestDto("testuser1", "Secret123!", "Test User");
 
             RegisterCommand redisterCommand = new RegisterCommand(registerRequestDto);
 
@@ -81,7 +81,7 @@ namespace PersonalFinanceApiTest
 
             LoginCommandHandler loginCommandHandler = new LoginCommandHandler(tokenService, userRepository, passwordHasher);
 
-            LoginRequestDto loginRequestDto = new LoginRequestDto("testuser", "Secret124!");
+            LoginRequestDto loginRequestDto = new LoginRequestDto("testuser1", "Secret124!");
 
             LoginCommand command = new LoginCommand(loginRequestDto);
 
@@ -113,7 +113,7 @@ namespace PersonalFinanceApiTest
             TokenService tokenService = new TokenService(configuration);
             RegisterCommandHandler registerCommandHandler = new RegisterCommandHandler(userRepository, passwordHasher, context);
 
-            RegisterRequestDto registerRequestDto = new RegisterRequestDto("testuser", "Secret123!", "Test User");
+            RegisterRequestDto registerRequestDto = new RegisterRequestDto("testuser2", "Secret123!", "Test User");
 
             RegisterCommand redisterCommand = new RegisterCommand(registerRequestDto);
 
@@ -121,7 +121,7 @@ namespace PersonalFinanceApiTest
 
             LoginCommandHandler loginCommandHandler = new LoginCommandHandler(tokenService, userRepository, passwordHasher);
 
-            LoginRequestDto loginRequestDto = new LoginRequestDto("testuser", "Secret123!");
+            LoginRequestDto loginRequestDto = new LoginRequestDto("testuser2", "Secret123!");
 
             LoginCommand command = new LoginCommand(loginRequestDto);
 

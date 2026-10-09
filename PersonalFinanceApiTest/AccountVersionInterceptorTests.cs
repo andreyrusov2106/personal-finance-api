@@ -9,6 +9,7 @@ using PersonalFinance.Application.Tasks.Queries;
 using PersonalFinance.Application.Exceptions;
 using PersonalFinance.Infrastructure;
 using PersonalFinance.Infrastructure.Repositories;
+using PersonalFinanceApiTest.Helpers;
 
 namespace PersonalFinanceApiTest
 {
@@ -16,7 +17,7 @@ namespace PersonalFinanceApiTest
     [TestClass]
     public class AccountVersionInterceptorTests
     {
-        /*
+        
         [TestMethod]
         public void Version_Should_Increase_When_Account_Is_Modified()
         {
@@ -28,7 +29,10 @@ namespace PersonalFinanceApiTest
 
             var context = new AppDbContext(options);
             var currency = new Currency("RUB", 123);
-            var account = new Account("test", currency);
+            var user = new User("test", "Test User");
+
+            context.Users.Add(user);
+            var account = new Account("test", currency, user.Id);
             context.Accounts.Add(account);
 
             // ACT (Действие)
@@ -56,7 +60,10 @@ namespace PersonalFinanceApiTest
 
             var firstContext = new AppDbContext(options);
             var currency = new Currency("RUB", 123);
-            var account = new Account("test", currency);
+            var user = new User("test", "Test User");
+
+            firstContext.Users.Add(user);
+            var account = new Account("test", currency, user.Id);
             firstContext.Accounts.Add(account);
 
             var secondContext = new AppDbContext(options);
@@ -96,9 +103,14 @@ namespace PersonalFinanceApiTest
             var context = new AppDbContext(options);
             var repository = new AccountRepository(context);
             var currency = new Currency("RUB", 123);
-            var firstAccount = new Account("fist", currency);
+            var user = new User("test", "Test User");
+
+            context.Users.Add(user);
+
+
+            var firstAccount = new Account("fist", currency, user.Id);
             context.Accounts.Add(firstAccount);
-            var secondAccount = new Account("second", currency);
+            var secondAccount = new Account("second", currency, user.Id);
             context.Accounts.Add(secondAccount);
 
 
@@ -107,7 +119,9 @@ namespace PersonalFinanceApiTest
             secondAccount.Deposit(1000);
             context.SaveChanges();
 
-            var handler = new TransferCommandHandler(repository, context);
+            var currentUser = new TestCurrentUser(user.Id);
+
+            var handler = new TransferCommandHandler(repository, context, currentUser);
 
            await handler.Handle(
                 new TransferCommand(firstAccount.Id, secondAccount.Id, 100),
@@ -132,15 +146,19 @@ namespace PersonalFinanceApiTest
                 .AddInterceptors(new AccountVersionInterceptor())
                 .Options; var context = new AppDbContext(options); 
             var repository = new AccountRepository(context); 
-            var currency = new Currency("RUB", 123); 
-            var firstAccount = new Account("fist", currency); 
+            var currency = new Currency("RUB", 123);
+            var user = new User("test", "Test User");
+
+            context.Users.Add(user);
+            var firstAccount = new Account("fist", currency, user.Id); 
             context.Accounts.Add(firstAccount); 
-            var secondAccount = new Account("second", currency); 
+            var secondAccount = new Account("second", currency, user.Id); 
             context.Accounts.Add(secondAccount); 
             firstAccount.Deposit(1000); 
             secondAccount.Deposit(1000); 
-            context.SaveChanges(); 
-            var handler = new TransferCommandHandler(repository, context); 
+            context.SaveChanges();
+            var currentUser = new TestCurrentUser(user.Id);
+            var handler = new TransferCommandHandler(repository, context,currentUser); 
             await Assert.ThrowsExactlyAsync<InsufficientFundsException>(
                 async () => { await handler.Handle( 
                     new TransferCommand(firstAccount.Id, secondAccount.Id, 1500), CancellationToken.None); }); 
@@ -163,15 +181,19 @@ namespace PersonalFinanceApiTest
             var context = new AppDbContext(options);
             var repository = new AccountRepository(context);
             var currency = new Currency("RUB", 123);
-            var firstAccount = new Account("fist", currency);
+            var user = new User("test", "Test User");
+
+            context.Users.Add(user);
+            var firstAccount = new Account("fist", currency, user.Id);
             context.Accounts.Add(firstAccount);
 
 
 
             firstAccount.Deposit(1000);
             context.SaveChanges();
+            var currentUser = new TestCurrentUser(user.Id);
 
-            var handler = new TransferCommandHandler(repository, context);
+            var handler = new TransferCommandHandler(repository, context, currentUser);
 
             await Assert.ThrowsExactlyAsync<SameAccountTransferException>(async () =>
             {
@@ -199,9 +221,12 @@ namespace PersonalFinanceApiTest
             var context = new AppDbContext(options);
             var repository = new AccountRepository(context);
             var currency = new Currency("RUB", 123);
-            var firstAccount = new Account("fist", currency);
+            var user = new User("test", "Test User");
+
+            context.Users.Add(user);
+            var firstAccount = new Account("fist", currency, user.Id);
             context.Accounts.Add(firstAccount);
-            var secondAccount = new Account("second", currency);
+            var secondAccount = new Account("second", currency, user.Id);
             context.Accounts.Add(secondAccount);
 
 
@@ -209,8 +234,9 @@ namespace PersonalFinanceApiTest
             firstAccount.Deposit(1000);
             secondAccount.Deposit(1000);
             context.SaveChanges();
+            var currentUser = new TestCurrentUser(user.Id);
 
-            var handler = new TransferCommandHandler(repository, context);
+            var handler = new TransferCommandHandler(repository, context, currentUser);
 
 
             await Assert.ThrowsExactlyAsync<InvalidTransferAmountException>(async () =>
@@ -243,9 +269,12 @@ namespace PersonalFinanceApiTest
             var context = new AppDbContext(options);
             var repository = new AccountRepository(context);
             var currency = new Currency("RUB", 123);
-            var firstAccount = new Account("fist", currency);
+            var user = new User("test", "Test User");
+
+            context.Users.Add(user);
+            var firstAccount = new Account("fist", currency, user.Id);
             context.Accounts.Add(firstAccount);
-            var secondAccount = new Account("second", currency);
+            var secondAccount = new Account("second", currency, user.Id);
             context.Accounts.Add(secondAccount);
 
 
@@ -253,8 +282,9 @@ namespace PersonalFinanceApiTest
             firstAccount.Deposit(1000);
             secondAccount.Deposit(1000);
             context.SaveChanges();
+            var currentUser = new TestCurrentUser(user.Id);
 
-            var handler = new TransferCommandHandler(repository, context);
+            var handler = new TransferCommandHandler(repository, context, currentUser);
 
 
             await Assert.ThrowsExactlyAsync<InvalidTransferAmountException>(async () =>
@@ -287,16 +317,18 @@ namespace PersonalFinanceApiTest
             var context = new AppDbContext(options);
             var repository = new AccountRepository(context);
             var currency = new Currency("RUB", 123);
-            var secondAccount = new Account("second", currency);
+            var user = new User("test", "Test User");
+
+            context.Users.Add(user);
+            var secondAccount = new Account("second", currency, user.Id);
             context.Accounts.Add(secondAccount);
 
 
             // ACT (Действие)
             secondAccount.Deposit(1000);
             context.SaveChanges();
-
-            var handler = new TransferCommandHandler(repository, context);
-
+            var currentUser = new TestCurrentUser(user.Id);
+            var handler = new TransferCommandHandler(repository, context, currentUser);
 
             await Assert.ThrowsExactlyAsync<AccountNotFoundException>(async () =>
             {
@@ -326,15 +358,18 @@ namespace PersonalFinanceApiTest
             var context = new AppDbContext(options);
             var repository = new AccountRepository(context);
             var currency = new Currency("RUB", 123);
-            var firstAccount = new Account("first", currency);
+            var user = new User("test", "Test User");
+
+            context.Users.Add(user);
+            var firstAccount = new Account("first", currency, user.Id);
             context.Accounts.Add(firstAccount);
 
 
             // ACT (Действие)
             firstAccount.Deposit(1000);
             context.SaveChanges();
-
-            var handler = new TransferCommandHandler(repository, context);
+            var currentUser = new TestCurrentUser(user.Id);
+            var handler = new TransferCommandHandler(repository, context, currentUser);
 
 
             await Assert.ThrowsExactlyAsync<AccountNotFoundException>(async () =>
@@ -351,7 +386,7 @@ namespace PersonalFinanceApiTest
             // ASSERT (Проверка)
             Assert.AreEqual(1000, secondAccountAfterTransfer.Balance);
 
-        }*/
+        }
 
 
 

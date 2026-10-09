@@ -38,7 +38,7 @@ namespace PersonalFinanceApiTest
             UserRepository userRepository = new UserRepository(context);
             RegisterCommandHandler registerCommandHandler = new RegisterCommandHandler(userRepository, passwordHasher, context);
 
-            RegisterRequestDto registerRequestDto = new RegisterRequestDto("testuser", "Secret123!", "Test User");
+            RegisterRequestDto registerRequestDto = new RegisterRequestDto("testuser5", "Secret123!", "Test User");
 
             RegisterCommand command = new RegisterCommand(registerRequestDto);
 
@@ -50,11 +50,11 @@ namespace PersonalFinanceApiTest
             // ASSERT (Проверка)
             Assert.AreNotEqual(Guid.Empty, guid);
 
-            var addedUser = await userRepository.GetUserAsync("testuser");
+            var addedUser = await userRepository.GetUserAsync("testuser5");
 
             Assert.IsNotNull(addedUser);
             Assert.AreEqual(guid, addedUser.Id);
-            Assert.AreEqual("testuser", addedUser.Login);
+            Assert.AreEqual("testuser5", addedUser.Login);
         }
 
         [TestMethod]
@@ -71,7 +71,7 @@ namespace PersonalFinanceApiTest
             UserRepository userRepository = new UserRepository(context);
             RegisterCommandHandler registerCommandHandler = new RegisterCommandHandler(userRepository, passwordHasher, context);
 
-            RegisterRequestDto registerRequestDto = new RegisterRequestDto("testuser1", "Secret123!", "Test User");
+            RegisterRequestDto registerRequestDto = new RegisterRequestDto("testuser7", "Secret123!", "Test User");
 
             RegisterCommand command = new RegisterCommand(registerRequestDto);
 
@@ -105,7 +105,7 @@ namespace PersonalFinanceApiTest
             UserRepository userRepository = new UserRepository(context);
             RegisterCommandHandler registerCommandHandler = new RegisterCommandHandler(userRepository, passwordHasher, context);
 
-            RegisterRequestDto registerRequestDto = new RegisterRequestDto("testuser2", "Secret123!", "Test User");
+            RegisterRequestDto registerRequestDto = new RegisterRequestDto("testuser8", "Secret123!", "Test User");
 
             RegisterCommand command = new RegisterCommand(registerRequestDto);
 
@@ -113,7 +113,7 @@ namespace PersonalFinanceApiTest
             // ACT (Действие)
             await registerCommandHandler.Handle(command, CancellationToken.None);
 
-            var addedUser = await userRepository.GetUserAsync("testuser");
+            var addedUser = await userRepository.GetUserAsync("testuser8");
 
             // ASSERT (Проверка)
             Assert.AreNotEqual("Secret123!", addedUser.PasswordHash);
@@ -135,7 +135,7 @@ namespace PersonalFinanceApiTest
             // ACT (Действие)
             var response = await client.PostAsJsonAsync(
               "/api/auth/register",
-                new RegisterRequestDto("testuser7", "Secret123!", "Test User")
+                new RegisterRequestDto("testuser19", "Secret123!", "Test User")
             );
 
             using var scope = webApplicationFactory.Services.CreateScope();
@@ -145,7 +145,7 @@ namespace PersonalFinanceApiTest
 
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
 
-            var user = await db.Users.FirstOrDefaultAsync(u => u.Login == "testuser7");
+            var user = await db.Users.FirstOrDefaultAsync(u => u.Login == "testuser19");
 
 
             // ASSERT (Проверка)
