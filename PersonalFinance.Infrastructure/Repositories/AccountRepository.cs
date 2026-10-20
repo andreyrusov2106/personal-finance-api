@@ -1,7 +1,7 @@
 ﻿using PersonalFinance.Application.Interfaces;
 using PersonalFinance.Domain;
 using Microsoft.EntityFrameworkCore;
-using PersonalFinanceApi;
+
 
 namespace PersonalFinance.Infrastructure.Repositories
 {

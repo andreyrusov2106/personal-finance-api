@@ -1,4 +1,4 @@
-﻿using PersonalFinanceApi.Exceptions;
+﻿using PersonalFinance.Domain.Exceptions;
 
 namespace PersonalFinance.Domain
 {

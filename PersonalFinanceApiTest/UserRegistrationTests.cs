@@ -135,7 +135,7 @@ namespace PersonalFinanceApiTest
             // ACT (Действие)
             var response = await client.PostAsJsonAsync(
               "/api/auth/register",
-                new RegisterRequestDto("testuser19", "Secret123!", "Test User")
+                new RegisterRequestDto("testuser20", "Secret123!", "Test User")
             );
 
             using var scope = webApplicationFactory.Services.CreateScope();
@@ -145,7 +145,7 @@ namespace PersonalFinanceApiTest
 
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
 
-            var user = await db.Users.FirstOrDefaultAsync(u => u.Login == "testuser19");
+            var user = await db.Users.FirstOrDefaultAsync(u => u.Login == "testuser20");
 
 
             // ASSERT (Проверка)

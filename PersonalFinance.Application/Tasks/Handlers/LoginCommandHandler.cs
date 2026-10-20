@@ -37,7 +37,7 @@ namespace PersonalFinance.Application.Tasks.Handlers
             var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, request.LoginRequestDto.password);
 
             if(result != PasswordVerificationResult.Success)
-                throw new InvalidCredentionalsException();
+                throw new InvalidCredentialsException();
 
 
             return _tokenService.CreateToken(user.Id.ToString(), user.Role, user.Name);

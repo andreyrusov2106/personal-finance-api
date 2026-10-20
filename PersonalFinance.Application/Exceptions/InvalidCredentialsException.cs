@@ -1,8 +1,8 @@
 ﻿namespace PersonalFinance.Application.Exceptions
 {
-    public class InvalidCredentionalsException : Exception
+    public class InvalidCredentialsException : Exception
     {
-        public InvalidCredentionalsException()
+        public InvalidCredentialsException()
             : base($"Invalid credentionals")
         {
         }

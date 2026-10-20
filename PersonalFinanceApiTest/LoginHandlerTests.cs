@@ -89,7 +89,7 @@ namespace PersonalFinanceApiTest
             // ACT (Действие)
 
             // ASSERT (Проверка)
-            await Assert.ThrowsExactlyAsync<InvalidCredentionalsException>(async () =>
+            await Assert.ThrowsExactlyAsync<InvalidCredentialsException>(async () =>
             {
                 await loginCommandHandler.Handle(command, CancellationToken.None);
             }

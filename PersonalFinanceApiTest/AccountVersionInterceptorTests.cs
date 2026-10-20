@@ -10,6 +10,7 @@ using PersonalFinance.Application.Exceptions;
 using PersonalFinance.Infrastructure;
 using PersonalFinance.Infrastructure.Repositories;
 using PersonalFinanceApiTest.Helpers;
+using PersonalFinance.Domain.Exceptions;
 
 namespace PersonalFinanceApiTest
 {

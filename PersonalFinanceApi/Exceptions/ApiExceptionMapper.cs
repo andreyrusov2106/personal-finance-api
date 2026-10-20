@@ -1,4 +1,6 @@
 ﻿using PersonalFinance.Application.Exceptions;
+using PersonalFinance.Domain.Exceptions;
+using System.Security.Authentication;
 
 namespace PersonalFinanceApi.Exceptions
 {
@@ -23,9 +25,9 @@ namespace PersonalFinanceApi.Exceptions
                     "Currency not found",
                     ex.Message),
 
-                InvalidCredentionalsException ex => new ApiException(
+                InvalidCredentialsException ex => new ApiException(
                 StatusCodes.Status400BadRequest,
-                "Invalid credentionals",
+                "Invalid Credentials",
                 ex.Message),
 
                 InvalidTransferAmountException ex => new ApiException(
@@ -46,6 +48,26 @@ namespace PersonalFinanceApi.Exceptions
                 UserNotFoundException ex => new ApiException(
                     StatusCodes.Status404NotFound,
                     "User not found",
+                    ex.Message),
+
+                AccountAlreadyClosedException ex => new ApiException(
+                StatusCodes.Status409Conflict,
+                "Account already closed",
+                ex.Message),
+
+                InsufficientFundsException ex => new ApiException(
+                    StatusCodes.Status400BadRequest,
+                    "Insufficient funds",
+                    ex.Message),
+
+                InvalidDepositAmountException ex => new ApiException(
+                    StatusCodes.Status400BadRequest,
+                    "Invalid deposit amount",
+                    ex.Message),
+
+                InvalidWithdrawAmountException ex => new ApiException(
+                    StatusCodes.Status400BadRequest,
+                    "Invalid withdraw amount",
                     ex.Message),
 
                 _ => null

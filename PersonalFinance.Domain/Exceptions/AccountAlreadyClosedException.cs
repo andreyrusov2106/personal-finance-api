@@ -1,4 +1,4 @@
-﻿namespace PersonalFinanceApi.Exceptions
+﻿namespace PersonalFinance.Domain.Exceptions
 {
     public class AccountAlreadyClosedException : Exception
     {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -170,6 +171,38 @@ namespace PersonalFinanceApiTest
             // ASSERT (Проверка)
             Assert.AreEqual(HttpStatusCode.NotFound, responseTransfer.StatusCode);
 
+        }
+
+        [TestMethod]
+        public async Task User_Cant_Transfer_More_Than_Balance()
+        {
+            // ARRANGE
+            var factory = new CustomWebApplicationFactory();
+            var helper = new UserOwnershipTestsHelper();
+
+            var client = await helper.CreateAuthenticatedClientAsync(factory, "userA");
+
+            using var scope = factory.Services.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+            var currency = new Currency("RUB", 1827);
+            db.Currencies.Add(currency);
+            await db.SaveChangesAsync();
+
+            var sourceAccount = await helper.CreateAccountAsync(client, currency);
+            var destinationAccount = await helper.CreateAccountAsync(client, currency);
+
+            // ACT
+            var response = await client.PostAsJsonAsync(
+                $"/api/accounts/{sourceAccount.Id}/transfer",
+                new TransferAccountDto(destinationAccount.Id, 1000));
+
+            var problem = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+
+            // ASSERT
+            Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.IsNotNull(problem);
+            Assert.AreEqual("Insufficient funds", problem.Title);
         }
 
 
