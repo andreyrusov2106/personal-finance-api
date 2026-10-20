@@ -70,6 +70,11 @@ namespace PersonalFinanceApi.Exceptions
                     "Invalid withdraw amount",
                     ex.Message),
 
+                MismatchedCurrenciesException ex => new ApiException(
+                StatusCodes.Status400BadRequest,
+                "The currencies of the accounts does not match",
+                ex.Message),
+
                 _ => null
             };
         }

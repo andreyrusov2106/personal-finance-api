@@ -8,7 +8,7 @@ namespace PersonalFinance.Application.DTOs
     decimal Balance,
     DateTime CreatedAt,
     DateTime? ClosedAt,
-    Currency Currency
+    CurrencyDto Currency
 );
 
 }

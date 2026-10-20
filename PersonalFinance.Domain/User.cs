@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PersonalFinance.Domain
+﻿namespace PersonalFinance.Domain
 {
     public class User
     {

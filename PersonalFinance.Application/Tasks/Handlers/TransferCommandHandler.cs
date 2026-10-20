@@ -32,10 +32,17 @@ namespace PersonalFinance.Application.Tasks.Handlers
 
             var toAccount = await _repository.GetAccountAsync(request.ToAccountId, _currentUser.UserId);
 
+            
+
             if (fromAccount == null)
                 throw new AccountNotFoundException(request.FromAccountId);
             if (toAccount == null)
                 throw new AccountNotFoundException(request.ToAccountId);
+
+            if (!fromAccount.Currency.Equals(toAccount.Currency))
+            {
+                throw new MismatchedCurrenciesException();
+            }
 
             fromAccount.Withdraw(request.Amount);
             toAccount.Deposit(request.Amount);
