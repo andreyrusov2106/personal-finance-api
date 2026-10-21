@@ -7,7 +7,7 @@ namespace PersonalFinance.Domain.Exceptions
     public class AccountHasBalanceException:Exception
     {
         public AccountHasBalanceException(decimal balance)
-            : base($"Account has balance'{balance}'")
+            : base($"Account has balance '{balance}'")
         {
         }
     }

@@ -72,19 +72,6 @@ namespace PersonalFinanceApi.Controllers
                 createdAccount);
         }
 
-        // DELETE: api/accounts/{id}
-        [Authorize]
-        [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> DeleteAccount(Guid id)
-        {
-            var command = new DeleteAccountCommand(id);
-            await _mediator.Send(command);
-
-            return NoContent();
-        }
-
 
         // POST /api/accounts/{id}/deposit
         [Authorize]
