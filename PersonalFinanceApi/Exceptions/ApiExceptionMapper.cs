@@ -55,6 +55,11 @@ namespace PersonalFinanceApi.Exceptions
                 "Account already closed",
                 ex.Message),
 
+                AccountHasBalanceException ex => new ApiException(
+                    StatusCodes.Status400BadRequest,
+                    "Account has balance",
+                    ex.Message),
+
                 InsufficientFundsException ex => new ApiException(
                     StatusCodes.Status400BadRequest,
                     "Insufficient funds",

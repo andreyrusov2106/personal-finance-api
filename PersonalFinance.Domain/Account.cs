@@ -72,6 +72,7 @@ namespace PersonalFinance.Domain
         {
             if (ClosedAt != null)
                 throw new AccountAlreadyClosedException(Name);
+            if (Balance != 0) throw new AccountHasBalanceException(Balance);
 
             ClosedAt = DateTime.UtcNow;
         }
