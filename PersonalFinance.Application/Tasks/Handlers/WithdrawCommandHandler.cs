@@ -39,7 +39,7 @@ namespace PersonalFinance.Application.Tasks.Handlers
                 account.Balance,
                 account.CreatedAt,
                 account.ClosedAt,
-                account.Currency
+                new CurrencyDto(account.Currency.Id, account.Currency.Code.ToString(), account.Currency.Name)
             );
         }
     

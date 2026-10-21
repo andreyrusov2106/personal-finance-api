@@ -1,9 +1,10 @@
 ﻿using MediatR;
-using PersonalFinance.Application.Tasks.Commands;
-using PersonalFinance.Application.Interfaces;
 using PersonalFinance.Application.DTOs;
 using PersonalFinance.Application.Exceptions;
+using PersonalFinance.Application.Interfaces;
+using PersonalFinance.Application.Tasks.Commands;
 using PersonalFinance.Domain;
+using System.Security.Principal;
 namespace PersonalFinance.Application.Tasks.Handlers
 {
     public class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand, AccountItemDto>
@@ -41,7 +42,7 @@ namespace PersonalFinance.Application.Tasks.Handlers
                 newAccount.Balance,
                 newAccount.CreatedAt,
                 newAccount.ClosedAt,
-                newAccount.Currency);
+                new CurrencyDto(newAccount.Currency.Id, newAccount.Currency.Code.ToString(), newAccount.Currency.Name));
         }
     }
 }

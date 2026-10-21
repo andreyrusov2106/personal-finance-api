@@ -1,7 +1,8 @@
 ﻿using MediatR;
-using PersonalFinance.Application.Tasks.Queries;
 using PersonalFinance.Application.DTOs;
 using PersonalFinance.Application.Interfaces;
+using PersonalFinance.Application.Tasks.Queries;
+using PersonalFinance.Domain;
 
 namespace PersonalFinance.Application.Tasks.Handlers;
 
@@ -28,7 +29,7 @@ public class GetAllAccountsQueryHandler : IRequestHandler<GetAllAccountsQuery, I
             a.Balance,
             a.CreatedAt,
             a.ClosedAt,
-            a.Currency
+            new CurrencyDto(a.Currency.Id, a.Currency.Code.ToString(), a.Currency.Name)
         ));
     }
 }
