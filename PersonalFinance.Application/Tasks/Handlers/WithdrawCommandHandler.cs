@@ -13,13 +13,17 @@ namespace PersonalFinance.Application.Tasks.Handlers
 
         private readonly ICurrentUser _currentUser;
 
+        private readonly IOperationHistoryService _operationHistoryService;
+
         public WithdrawCommandHandler(IAccountRepository accountRepository,
             IUnitOfWork unitOfWork,
-            ICurrentUser currentUser)
+            ICurrentUser currentUser,
+            IOperationHistoryService operationHistoryService)
         {
             _repository = accountRepository;
             _unitOfWork = unitOfWork;
             _currentUser = currentUser;
+            _operationHistoryService = operationHistoryService;
         }
 
         public async Task<AccountItemDto> Handle(WithdrawCommand request, CancellationToken cancellationToken)
@@ -30,6 +34,8 @@ namespace PersonalFinance.Application.Tasks.Handlers
                 throw new AccountNotFoundException(request.accountId);
 
             account.Withdraw(request.Amount);
+
+            _operationHistoryService.RecordWithdrawal(account.Id, request.Amount);
 
             await _unitOfWork.SaveChangesAsync();
 

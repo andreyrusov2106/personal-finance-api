@@ -12,6 +12,8 @@ namespace PersonalFinance.Infrastructure
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Currency> Currencies { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Operation> Operations { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
 
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -74,6 +76,33 @@ namespace PersonalFinance.Infrastructure
                 entity.HasIndex(s => s.Login).IsUnique();
                 entity.Property(s => s.PasswordHash).IsRequired().HasMaxLength(2000);
                 entity.Property(s => s.Role).IsRequired().HasMaxLength(200);
+            });
+
+            modelBuilder.Entity<Operation>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Type).IsRequired();
+                entity.Property(e => e.CreatedAt).IsRequired();
+
+                entity.HasMany(o => o.Transactions)
+                .WithOne(t => t.Operation)
+                .HasForeignKey(t => t.OperationId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+                entity.Navigation(o => o.Transactions)
+                    .HasField("_transactions")
+                    .UsePropertyAccessMode(PropertyAccessMode.Field);
+            });
+
+            modelBuilder.Entity<Transaction>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Amount).IsRequired();
+
+                entity.HasOne<Account>(t => t.Account)
+                  .WithMany()
+                  .HasForeignKey(t => t.AccountId)
+                  .OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<Currency>().HasData(

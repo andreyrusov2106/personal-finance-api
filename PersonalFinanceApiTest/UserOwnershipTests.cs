@@ -1,22 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using PersonalFinance.Application.DTOs;
-using PersonalFinance.Application.Tasks.Commands;
-using PersonalFinance.Application.Tasks.Handlers;
 using PersonalFinance.Domain;
 using PersonalFinance.Infrastructure;
-using PersonalFinance.Infrastructure.Repositories;
 using PersonalFinanceApiTest.Helpers;
-using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Text;
-using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace PersonalFinanceApiTest
 {

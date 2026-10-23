@@ -1,7 +1,8 @@
 ﻿using MediatR;
-using PersonalFinance.Application.Tasks.Commands;
 using PersonalFinance.Application.Exceptions;
 using PersonalFinance.Application.Interfaces;
+using PersonalFinance.Application.Tasks.Commands;
+using PersonalFinance.Domain;
 
 namespace PersonalFinance.Application.Tasks.Handlers
 {
@@ -11,14 +12,17 @@ namespace PersonalFinance.Application.Tasks.Handlers
         private readonly IUnitOfWork _unitOfWork;
 
         private readonly ICurrentUser _currentUser;
+        private readonly IOperationHistoryService _operationHistoryService;
 
         public TransferCommandHandler(IAccountRepository accountRepository,
             IUnitOfWork unitOfWork,
-            ICurrentUser currentUser)
+            ICurrentUser currentUser,
+            IOperationHistoryService operationHistoryService)
         {
             _repository = accountRepository;
             _unitOfWork = unitOfWork;
             _currentUser = currentUser;
+            _operationHistoryService = operationHistoryService;
         }
         public async Task Handle(TransferCommand request, CancellationToken cancellationToken)
         {
@@ -46,6 +50,8 @@ namespace PersonalFinance.Application.Tasks.Handlers
 
             fromAccount.Withdraw(request.Amount);
             toAccount.Deposit(request.Amount);
+
+            _operationHistoryService.RecordTransfer(fromAccount.Id, toAccount.Id, request.Amount);
 
             await _unitOfWork.SaveChangesAsync();
         }

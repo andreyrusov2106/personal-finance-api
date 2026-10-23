@@ -71,6 +71,7 @@ public partial class Program
     cfg.RegisterServicesFromAssembly(typeof(IUnitOfWork).Assembly));
         builder.Services.AddScoped<ICurrentUser, CurrentUser>();
         builder.Services.AddScoped<ITokenService, TokenService>();
+        builder.Services.AddScoped<IOperationHistoryService, IOperationHistoryService>();
         builder.Services.AddSingleton<IExceptionMapper, ApiExceptionMapper>();
 
         builder.Services

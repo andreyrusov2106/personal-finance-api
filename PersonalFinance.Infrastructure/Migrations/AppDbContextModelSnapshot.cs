@@ -109,6 +109,47 @@ namespace PersonalFinance.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("PersonalFinance.Domain.Operation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Operations");
+                });
+
+            modelBuilder.Entity("PersonalFinance.Domain.Transaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AccountId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric");
+
+                    b.Property<Guid>("OperationId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("OperationId");
+
+                    b.ToTable("Transactions");
+                });
+
             modelBuilder.Entity("PersonalFinance.Domain.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -159,6 +200,30 @@ namespace PersonalFinance.Infrastructure.Migrations
                     b.Navigation("Currency");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PersonalFinance.Domain.Transaction", b =>
+                {
+                    b.HasOne("PersonalFinance.Domain.Account", "Account")
+                        .WithMany()
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PersonalFinance.Domain.Operation", "Operation")
+                        .WithMany("Transactions")
+                        .HasForeignKey("OperationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Operation");
+                });
+
+            modelBuilder.Entity("PersonalFinance.Domain.Operation", b =>
+                {
+                    b.Navigation("Transactions");
                 });
 
             modelBuilder.Entity("PersonalFinance.Domain.User", b =>

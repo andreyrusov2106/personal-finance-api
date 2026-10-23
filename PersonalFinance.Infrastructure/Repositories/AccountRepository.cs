@@ -39,9 +39,5 @@ namespace PersonalFinance.Infrastructure.Repositories
 
         }
 
-        public void DeleteAccount(Account account)
-        {
-            _context.Accounts.Remove(account);
-        }
     }
 }
