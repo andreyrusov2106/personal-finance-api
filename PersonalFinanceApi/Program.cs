@@ -8,6 +8,7 @@ using PersonalFinance.Infrastructure;
 using PersonalFinance.Infrastructure.Concurency;
 using PersonalFinance.Infrastructure.Options;
 using PersonalFinance.Infrastructure.Repositories;
+using PersonalFinance.Infrastructure.Services;
 using PersonalFinanceApi;
 using PersonalFinanceApi.Exceptions;
 using System.Text;
@@ -71,7 +72,8 @@ public partial class Program
     cfg.RegisterServicesFromAssembly(typeof(IUnitOfWork).Assembly));
         builder.Services.AddScoped<ICurrentUser, CurrentUser>();
         builder.Services.AddScoped<ITokenService, TokenService>();
-        builder.Services.AddScoped<IOperationHistoryService, IOperationHistoryService>();
+        builder.Services.AddScoped<IOperationHistoryService, OperationHistoryService>();
+        builder.Services.AddScoped<IOperationHistoryRepository, OperationHistoryRepository>();
         builder.Services.AddSingleton<IExceptionMapper, ApiExceptionMapper>();
 
         builder.Services

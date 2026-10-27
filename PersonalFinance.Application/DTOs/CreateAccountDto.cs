@@ -4,11 +4,11 @@ using System.ComponentModel.DataAnnotations;
 namespace PersonalFinance.Application.DTOs
 {
     public record CreateAccountDto(
-        [property: Required]
-        [property: StringLength(100, MinimumLength = 3)]
+        [Required]
+        [StringLength(100, MinimumLength = 3)]
         string Name,
 
-        [property: NotEmptyGuid]
+        [NotEmptyGuid]
         Guid CurrencyId
         );
 }

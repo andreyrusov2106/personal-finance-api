@@ -69,6 +69,8 @@ namespace PersonalFinanceApiTest
             Assert.AreEqual(-100, transactions[1].Amount);
             Assert.AreEqual(secondAccount.Id, transactions[0].AccountId);
             Assert.AreEqual(firstAccount.Id, transactions[1].AccountId);
+            Assert.AreEqual(operations[0].Id, transactions[0].OperationId);
+            Assert.AreEqual(operations[0].Id, transactions[1].OperationId);
             Assert.AreEqual(1, operations.Count);
             Assert.AreEqual(OperationType.Transfer, operations[0].Type);
 

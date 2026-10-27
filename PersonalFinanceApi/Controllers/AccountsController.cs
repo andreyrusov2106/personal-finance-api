@@ -141,6 +141,19 @@ namespace PersonalFinanceApi.Controllers
                 return NoContent();
             }
 
+        [Authorize]
+        [HttpGet("/api/accounts/{accountId}/history")]
+        public async Task<ActionResult> GetHistory(
+        Guid accountId)
+        {
+            var command = new GetHistoryQuery(
+                accountId);
+
+            var history = await _mediator.Send(command);
+
+            return Ok(history);
+        }
+
 
 
     }
