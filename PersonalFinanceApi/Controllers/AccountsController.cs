@@ -1,9 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using PersonalFinance.Application.DTOs;
-using PersonalFinance.Application.Tasks.Queries;
 using PersonalFinance.Application.Tasks.Commands;
+using PersonalFinance.Application.Tasks.Queries;
 
 namespace PersonalFinanceApi.Controllers
 {
@@ -144,10 +145,10 @@ namespace PersonalFinanceApi.Controllers
         [Authorize]
         [HttpGet("/api/accounts/{accountId}/history")]
         public async Task<ActionResult> GetHistory(
-        Guid accountId)
+        Guid accountId, [FromQuery] int page =1, [FromQuery] int pageSize =20)
         {
             var command = new GetHistoryQuery(
-                accountId);
+                accountId, page, pageSize);
 
             var history = await _mediator.Send(command);
 

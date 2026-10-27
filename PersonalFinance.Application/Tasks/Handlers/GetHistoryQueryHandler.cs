@@ -6,11 +6,12 @@ using PersonalFinance.Application.Tasks.Queries;
 using PersonalFinance.Domain.Enums;
 using System;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace PersonalFinance.Application.Tasks.Handlers
 {
-    public class GetHistoryQueryHandler : IRequestHandler<GetHistoryQuery, IEnumerable<HistoryDto>>
+    public class GetHistoryQueryHandler : IRequestHandler<GetHistoryQuery, PaginationHistoryDto>
     {
         private readonly IAccountRepository _accountRepository;
         private readonly IOperationHistoryRepository _historyRepository;
@@ -25,15 +26,23 @@ namespace PersonalFinance.Application.Tasks.Handlers
             _currentUser = currentUser;
         }
 
-        public async Task<IEnumerable<HistoryDto>> Handle(GetHistoryQuery request, CancellationToken cancellationToken)
+        public async Task<PaginationHistoryDto> Handle(GetHistoryQuery request, CancellationToken cancellationToken)
         {
+            if(request.page<1 ||
+                (request.pageSize<1 || request.pageSize >100))
+            {
+                throw new InvalidPaginationParametersException();
+            }
             var account = await _accountRepository.GetAccountAsync(request.accountId, _currentUser.UserId);
             if (account == null)
                 throw new AccountNotFoundException(request.accountId);
-            var transactions = await _historyRepository.GetHistoryByAccountId(_currentUser.UserId, request.accountId, cancellationToken);
+
+            
+            int skip=(request.page - 1)*request.pageSize;
+            var transactions = await _historyRepository.GetHistoryByAccountIdAsync(_currentUser.UserId, request.accountId, skip, request.pageSize, cancellationToken);
             List<HistoryDto> historyDtos = new List<HistoryDto>();
 
-            foreach (var transaction in transactions) {
+            foreach (var transaction in transactions.Items) {
                 HistoryDto historyDto = new HistoryDto
                 (
                     transaction.Operation.CreatedAt,
@@ -47,7 +56,14 @@ namespace PersonalFinance.Application.Tasks.Handlers
                 historyDtos.Add( historyDto );
 
             }
-            return historyDtos;
+
+            return new PaginationHistoryDto(
+                historyDtos, 
+                request.page, 
+                request.pageSize, 
+                transactions.TotalCount,
+                (int)Math.Ceiling((decimal)transactions.TotalCount / (decimal)request.pageSize)
+                );
         }
     }
 }

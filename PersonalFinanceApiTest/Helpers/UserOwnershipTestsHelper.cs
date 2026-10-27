@@ -36,11 +36,11 @@ namespace PersonalFinanceApiTest.Helpers
             return client;
         }
 
-        public async Task<AccountItemDto> CreateAccountAsync(HttpClient clientA, Currency currency)
+        public async Task<AccountItemDto> CreateAccountAsync(HttpClient clientA, Currency currency, string name)
         {
             var responseCreateAccount = await clientA.PostAsJsonAsync(
               "api/accounts",
-                new CreateAccountDto("accountA", currency.Id)
+                new CreateAccountDto(name, currency.Id)
             );
 
             Assert.AreEqual(HttpStatusCode.Created, responseCreateAccount.StatusCode);

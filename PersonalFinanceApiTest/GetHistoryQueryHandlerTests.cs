@@ -30,11 +30,11 @@ namespace PersonalFinanceApiTest
             await db.SaveChangesAsync();
 
             // ACT (Действие)
-            var createdAccount = await userOwnershipTestsHelper.CreateAccountAsync(clientA, currency);
+            var createdAccount = await userOwnershipTestsHelper.CreateAccountAsync(clientA, currency, "accountA");
             var accountId = createdAccount.Id;
 
 
-            var depositAccount = await userOwnershipTestsHelper.DepositAccountAsync(clientA, accountId, 1000);
+            await userOwnershipTestsHelper.DepositAccountAsync(clientA, accountId, 1000);
 
             var history = await userOwnershipTestsHelper.GetHistoryAsync(clientA, accountId);
 
@@ -63,13 +63,13 @@ namespace PersonalFinanceApiTest
             await db.SaveChangesAsync();
 
             // ACT (Действие)
-            var createdAccount = await userOwnershipTestsHelper.CreateAccountAsync(clientA, currency);
+            var createdAccount = await userOwnershipTestsHelper.CreateAccountAsync(clientA, currency, "accountA");
             var accountId = createdAccount.Id;
 
 
-            var depositAccount = await userOwnershipTestsHelper.DepositAccountAsync(clientA, accountId, 1000);
+            await userOwnershipTestsHelper.DepositAccountAsync(clientA, accountId, 1000);
 
-            var withdrawalAccount = await userOwnershipTestsHelper.WithdrawAccountAsync(clientA, accountId, 100);
+            await userOwnershipTestsHelper.WithdrawAccountAsync(clientA, accountId, 100);
 
             var history = await userOwnershipTestsHelper.GetHistoryAsync(clientA, accountId);
 
@@ -98,14 +98,14 @@ namespace PersonalFinanceApiTest
             await db.SaveChangesAsync();
 
             // ACT (Действие)
-            var accountFrom = await userOwnershipTestsHelper.CreateAccountAsync(clientA, currency);
+            var accountFrom = await userOwnershipTestsHelper.CreateAccountAsync(clientA, currency, "accountA");
             var accountFromId = accountFrom.Id;
 
-            var accountTo = await userOwnershipTestsHelper.CreateAccountAsync(clientA, currency);
+            var accountTo = await userOwnershipTestsHelper.CreateAccountAsync(clientA, currency, "accountB");
             var accountToId = accountTo.Id;
 
 
-            var depositAccount = await userOwnershipTestsHelper.DepositAccountAsync(clientA, accountFromId, 1000);
+            await userOwnershipTestsHelper.DepositAccountAsync(clientA, accountFromId, 1000);
 
             await userOwnershipTestsHelper.TransferAsync(clientA, accountFromId, accountToId, 100);
 
@@ -115,7 +115,7 @@ namespace PersonalFinanceApiTest
             Assert.AreEqual(2, history.Count);
             Assert.AreEqual(100, history[0].Amount);
             Assert.AreEqual(OperationType.Transfer, history[0].Type);
-            Assert.AreEqual("accountA", history[0].RelatedAccountName);
+            Assert.AreEqual("accountB", history[0].RelatedAccountName);
             Assert.AreEqual(Direction.Outgoing, history[0].Direction);
 
         }
@@ -136,14 +136,14 @@ namespace PersonalFinanceApiTest
             await db.SaveChangesAsync();
 
             // ACT (Действие)
-            var accountFrom = await userOwnershipTestsHelper.CreateAccountAsync(clientA, currency);
+            var accountFrom = await userOwnershipTestsHelper.CreateAccountAsync(clientA, currency, "accountA");
             var accountFromId = accountFrom.Id;
 
-            var accountTo = await userOwnershipTestsHelper.CreateAccountAsync(clientA, currency);
+            var accountTo = await userOwnershipTestsHelper.CreateAccountAsync(clientA, currency, "accountB");
             var accountToId = accountTo.Id;
 
 
-            var depositAccount = await userOwnershipTestsHelper.DepositAccountAsync(clientA, accountFromId, 1000);
+            await userOwnershipTestsHelper.DepositAccountAsync(clientA, accountFromId, 1000);
 
             await userOwnershipTestsHelper.TransferAsync(clientA, accountFromId, accountToId, 100);
 
@@ -174,7 +174,7 @@ namespace PersonalFinanceApiTest
             await db.SaveChangesAsync();
 
             // ACT (Действие)
-            var createdAccount = await userOwnershipTestsHelper.CreateAccountAsync(clientA, currency);
+            var createdAccount = await userOwnershipTestsHelper.CreateAccountAsync(clientA, currency, "accountA");
             var accountId = createdAccount.Id;
 
 
@@ -203,7 +203,7 @@ namespace PersonalFinanceApiTest
             await db.SaveChangesAsync();
 
             // ACT (Действие)
-            var createdAccount = await userOwnershipTestsHelper.CreateAccountAsync(clientA, currency);
+            var createdAccount = await userOwnershipTestsHelper.CreateAccountAsync(clientA, currency, "accountA");
             var accountId = createdAccount.Id;
 
 

@@ -30,7 +30,7 @@ namespace PersonalFinanceApiTest
 
             // ACT (Действие)
 
-            var createdAccount = await userOwnershipTestsHelper.CreateAccountAsync(clientA, currency);
+            var createdAccount = await userOwnershipTestsHelper.CreateAccountAsync(clientA, currency, "accountA");
             var accountId = createdAccount.Id;
             var responseGetAccount = await clientB.GetAsync(
               $"api/accounts/{accountId}"
@@ -59,7 +59,7 @@ namespace PersonalFinanceApiTest
 
             // ACT (Действие)
 
-            var createdAccount = await userOwnershipTestsHelper.CreateAccountAsync(clientA, currency);
+            var createdAccount = await userOwnershipTestsHelper.CreateAccountAsync(clientA, currency, "accountA");
             var accountId = createdAccount.Id;
             var responseGetAccount = await clientB.PutAsync(
               $"api/accounts/{accountId}", null
@@ -88,7 +88,7 @@ namespace PersonalFinanceApiTest
 
             // ACT (Действие)
 
-            var createdAccount = await userOwnershipTestsHelper.CreateAccountAsync(clientA, currency);
+            var createdAccount = await userOwnershipTestsHelper.CreateAccountAsync(clientA, currency, "accountA");
 
             var accountId = createdAccount.Id;
             var responseGetAccount = await clientB.PostAsJsonAsync(
@@ -118,7 +118,7 @@ namespace PersonalFinanceApiTest
 
             // ACT (Действие)
 
-            var createdAccount = await userOwnershipTestsHelper.CreateAccountAsync(clientA, currency);
+            var createdAccount = await userOwnershipTestsHelper.CreateAccountAsync(clientA, currency, "accountA");
 
             var accountId = createdAccount.Id;
             var responseGetAccount = await clientB.PostAsJsonAsync(
@@ -148,8 +148,8 @@ namespace PersonalFinanceApiTest
 
             // ACT (Действие)
 
-            var createdAccountA = await userOwnershipTestsHelper.CreateAccountAsync(clientA, currency);
-            var createdAccountB = await userOwnershipTestsHelper.CreateAccountAsync(clientB, currency);
+            var createdAccountA = await userOwnershipTestsHelper.CreateAccountAsync(clientA, currency, "accountA");
+            var createdAccountB = await userOwnershipTestsHelper.CreateAccountAsync(clientB, currency, "accountA");
 
             var accountIdA = createdAccountA.Id;
             var accountIdB = createdAccountB.Id;
@@ -178,8 +178,8 @@ namespace PersonalFinanceApiTest
             db.Currencies.Add(currency);
             await db.SaveChangesAsync();
 
-            var sourceAccount = await helper.CreateAccountAsync(client, currency);
-            var destinationAccount = await helper.CreateAccountAsync(client, currency);
+            var sourceAccount = await helper.CreateAccountAsync(client, currency, "accountA");
+            var destinationAccount = await helper.CreateAccountAsync(client, currency, "accountA");
 
             // ACT
             var response = await client.PostAsJsonAsync(

@@ -74,6 +74,10 @@ namespace PersonalFinanceApi.Exceptions
                     StatusCodes.Status400BadRequest,
                     "Invalid withdraw amount",
                     ex.Message),
+                InvalidPaginationParametersException ex => new ApiException(
+                   StatusCodes.Status400BadRequest,
+                   "\"Invalid pagination parameters",
+                   ex.Message),
 
                 MismatchedCurrenciesException ex => new ApiException(
                 StatusCodes.Status400BadRequest,
