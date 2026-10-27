@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Testing;
 using PersonalFinance.Application.DTOs;
 using PersonalFinance.Domain;
 using System;
@@ -49,6 +50,64 @@ namespace PersonalFinanceApiTest.Helpers
             Assert.IsNotNull(createdAccount);
 
             return createdAccount;
+        }
+
+        public async Task<AccountItemDto> DepositAccountAsync(HttpClient clientA, Guid accountId, decimal ammount)
+        {
+            var responseDepositAccount = await clientA.PostAsJsonAsync(
+              $"api/accounts/{accountId}/deposit",
+                new DepositAccountDto(ammount)
+            );
+
+            Assert.AreEqual(HttpStatusCode.OK, responseDepositAccount.StatusCode);
+
+            var depositedAccount = await responseDepositAccount.Content.ReadFromJsonAsync<AccountItemDto>();
+
+            Assert.IsNotNull(depositedAccount);
+
+            return depositedAccount;
+        }
+
+        public async Task<AccountItemDto> WithdrawAccountAsync(HttpClient clientA, Guid accountId, decimal ammount)
+        {
+            var responseDepositAccount = await clientA.PostAsJsonAsync(
+              $"api/accounts/{accountId}/withdraw",
+                new DepositAccountDto(ammount)
+            );
+
+            Assert.AreEqual(HttpStatusCode.OK, responseDepositAccount.StatusCode);
+
+            var withdrawalAccount = await responseDepositAccount.Content.ReadFromJsonAsync<AccountItemDto>();
+
+            Assert.IsNotNull(withdrawalAccount);
+
+            return withdrawalAccount;
+        }
+
+        public async Task TransferAsync(HttpClient clientA, Guid accountIdFrom, Guid accountIdTo, decimal ammount)
+        {
+            var responseTransferAccount = await clientA.PostAsJsonAsync(
+              $"api/accounts/{accountIdFrom}/transfer",
+                new TransferAccountDto(accountIdTo, ammount)
+            );
+
+            Assert.AreEqual(HttpStatusCode.NoContent, responseTransferAccount.StatusCode);
+        }
+
+
+        public async Task<List<HistoryDto>> GetHistoryAsync(HttpClient clientA, Guid accountId)
+        {
+            var responseGetHistory = await clientA.GetAsync(
+              $"api/accounts/{accountId}/history"
+            );
+
+            Assert.AreEqual(HttpStatusCode.OK, responseGetHistory.StatusCode);
+
+            var history = await responseGetHistory.Content.ReadFromJsonAsync<List<HistoryDto>>();
+
+            Assert.IsNotNull(history);
+
+            return history;
         }
 
     }

@@ -22,7 +22,7 @@ namespace PersonalFinanceApiTest
         {
             // ARRANGE (Подготовка)
             var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase("TestDatabase")
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .AddInterceptors(new AccountVersionInterceptor())
                 .Options;
 
