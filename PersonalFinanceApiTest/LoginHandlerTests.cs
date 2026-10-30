@@ -24,7 +24,7 @@ namespace PersonalFinanceApiTest
         {
             // ARRANGE(Подготовка)
             var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase("TestDatabase")
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
             PasswordHasher<User> passwordHasher = new PasswordHasher<User>();
             ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
@@ -58,7 +58,7 @@ namespace PersonalFinanceApiTest
         {
             // ARRANGE(Подготовка)
             var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase("TestDatabase")
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
             PasswordHasher<User> passwordHasher = new PasswordHasher<User>();
             ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
@@ -101,7 +101,7 @@ namespace PersonalFinanceApiTest
         {
             // ARRANGE(Подготовка)
             var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase("TestDatabase")
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
             PasswordHasher<User> passwordHasher = new PasswordHasher<User>();
             ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();

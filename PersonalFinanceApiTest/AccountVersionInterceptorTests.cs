@@ -22,7 +22,7 @@ namespace PersonalFinanceApiTest
         {
             // ARRANGE (Подготовка)
             var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase("TestDatabase")
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .AddInterceptors(new AccountVersionInterceptor())
                 .Options;
 
@@ -53,7 +53,7 @@ namespace PersonalFinanceApiTest
         {
             // ARRANGE (Подготовка)
             var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase("TestDatabase")
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .AddInterceptors(new AccountVersionInterceptor())
                 .Options;
 
@@ -95,7 +95,7 @@ namespace PersonalFinanceApiTest
         {
             // ARRANGE (Подготовка)
             var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase("TestDatabase")
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .AddInterceptors(new AccountVersionInterceptor())
                 .Options;
             
@@ -142,7 +142,7 @@ namespace PersonalFinanceApiTest
         public async Task Not_Enough_Money_For_Transfer_Balace_Should_Be_The_Same()
         { // ARRANGE (Подготовка)
           var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase("TestDatabase")
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .AddInterceptors(new AccountVersionInterceptor())
                 .Options; var context = new AppDbContext(options); 
             var repository = new AccountRepository(context);
@@ -175,7 +175,7 @@ namespace PersonalFinanceApiTest
         {
             // ARRANGE (Подготовка)
             var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase("TestDatabase")
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .AddInterceptors(new AccountVersionInterceptor())
                 .Options;
 
@@ -216,7 +216,7 @@ namespace PersonalFinanceApiTest
         {
             // ARRANGE (Подготовка)
             var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase("TestDatabase")
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .AddInterceptors(new AccountVersionInterceptor())
                 .Options;
 
@@ -265,7 +265,7 @@ namespace PersonalFinanceApiTest
         {
             // ARRANGE (Подготовка)
             var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase("TestDatabase")
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .AddInterceptors(new AccountVersionInterceptor())
                 .Options;
 
@@ -314,7 +314,7 @@ namespace PersonalFinanceApiTest
         {
             // ARRANGE (Подготовка)
             var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase("TestDatabase")
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .AddInterceptors(new AccountVersionInterceptor())
                 .Options;
 
@@ -356,7 +356,7 @@ namespace PersonalFinanceApiTest
         {
             // ARRANGE (Подготовка)
             var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase("TestDatabase")
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .AddInterceptors(new AccountVersionInterceptor())
                 .Options;
 

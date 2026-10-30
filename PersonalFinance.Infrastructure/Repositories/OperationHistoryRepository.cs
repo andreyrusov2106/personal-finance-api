@@ -29,8 +29,8 @@ namespace PersonalFinance.Infrastructure.Repositories
             .Where(t => t.AccountId == accountId && t.Account.UserId == userId);
 
             if (type != null) baseQuery = baseQuery.Where(t=>t.Operation.Type==type.Value);
-            if (from != null) baseQuery = baseQuery.Where(t => t.Operation.CreatedAt>=from.Value);
-            if (to != null) baseQuery = baseQuery.Where(t => t.Operation.CreatedAt < to.Value.AddDays(1));
+            if (from != null) baseQuery = baseQuery.Where(t => t.Operation.CreatedAt>=from.Value.Date);
+            if (to != null) baseQuery = baseQuery.Where(t => t.Operation.CreatedAt < to.Value.Date.AddDays(1));
 
             var totalCount = await baseQuery.CountAsync(cancellationToken);
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PersonalFinance.Application.Tasks.Commands;
 using PersonalFinance.Application.Tasks.Handlers;
+using PersonalFinance.Application.Tasks.Queries;
 using PersonalFinance.Domain;
 using PersonalFinance.Domain.Enums;
 using PersonalFinance.Infrastructure;
@@ -81,7 +82,7 @@ namespace PersonalFinanceApiTest
         {
             // ARRANGE (Подготовка)
             var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase("TestDatabase")
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .AddInterceptors(new AccountVersionInterceptor())
                 .Options;
 
@@ -129,7 +130,7 @@ namespace PersonalFinanceApiTest
         {
             // ARRANGE (Подготовка)
             var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase("TestDatabase")
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .AddInterceptors(new AccountVersionInterceptor())
                 .Options;
 
@@ -170,6 +171,95 @@ namespace PersonalFinanceApiTest
             Assert.AreEqual(account.Id, transactions[0].AccountId);
             Assert.AreEqual(1, operations.Count);
             Assert.AreEqual(OperationType.Withdrawal, operations[0].Type);
+
+        }
+
+
+
+        [TestMethod]
+        public async Task Check_Operation_Dates_Near_Midnight()
+        {
+            // ARRANGE (Подготовка)
+            var options = new DbContextOptionsBuilder<AppDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .AddInterceptors(new AccountVersionInterceptor())
+                .Options;
+
+            var context = new AppDbContext(options);
+            var accountRepository = new AccountRepository(context);
+            var operationHistoryRepository = new OperationHistoryRepository(context);
+            var service = new OperationHistoryService(context);
+            var currency = new Currency("RUB", 123);
+            var user = new User("test", "Test User");
+
+            context.Users.Add(user);
+
+
+            var account = new Account("fist", currency, user.Id);
+            context.Accounts.Add(account);
+            account.Deposit(1000);
+            
+
+
+            // ACT (Действие)
+            var currentUser = new TestCurrentUser(user.Id);
+
+            var operation1 = new Operation(OperationType.Deposit);
+            var operation2 = new Operation(OperationType.Deposit);
+            var operation3 = new Operation(OperationType.Deposit);
+            context.Operations.Add(operation1);
+            context.Operations.Add(operation2);
+            context.Operations.Add(operation3);
+
+            context.Entry(operation1)
+                .Property(o => o.CreatedAt)
+                .CurrentValue = new DateTime(2026, 10, 30, 23, 59, 0, DateTimeKind.Utc);
+
+            context.Entry(operation2)
+                .Property(o => o.CreatedAt)
+                .CurrentValue = new DateTime(2026, 10, 31, 00, 00, 0, DateTimeKind.Utc);
+            context.Entry(operation3)
+                .Property(o => o.CreatedAt)
+                .CurrentValue = new DateTime(2026, 10, 31, 00, 01, 0, DateTimeKind.Utc);
+
+
+
+            Transaction transaction1 = new Transaction(operation1.Id, account.Id, 100);
+            Transaction transaction2 = new Transaction(operation2.Id, account.Id, 100);
+            Transaction transaction3 = new Transaction(operation3.Id, account.Id, 100);
+            context.Transactions.Add(transaction1);
+            context.Transactions.Add(transaction2);
+            context.Transactions.Add(transaction3);
+
+            context.SaveChanges();
+
+
+            var handler = new GetHistoryQueryHandler(accountRepository, operationHistoryRepository, currentUser);
+
+            var result1 = await handler.Handle(
+                 new GetHistoryQuery(account.Id, 1,20,
+                 OperationType.Deposit, 
+                 new DateTime(2026, 10, 29, 00, 00, 0, DateTimeKind.Utc), 
+                 new DateTime(2026, 10, 30, 00, 00, 0, DateTimeKind.Utc)),
+                 CancellationToken.None);
+
+
+            var result2 = await handler.Handle(
+                 new GetHistoryQuery(account.Id, 1, 20,
+                 OperationType.Deposit,
+                 new DateTime(2026, 10, 31, 00, 00, 0, DateTimeKind.Utc),
+                 new DateTime(2026, 11, 01, 00, 00, 0, DateTimeKind.Utc)),
+                 CancellationToken.None);
+
+
+            // ASSERT (Проверка)
+            Assert.AreEqual(1, result1.items.Count);
+            Assert.AreEqual(new DateTime(2026, 10, 30, 23, 59, 0, DateTimeKind.Utc), result1.items[0].CreatedAt);
+
+            Assert.AreEqual(2, result2.items.Count);
+            Assert.AreEqual(new DateTime(2026, 10, 31, 00, 01, 0, DateTimeKind.Utc), result2.items[0].CreatedAt);
+            Assert.AreEqual(new DateTime(2026, 10, 31, 00, 00, 0, DateTimeKind.Utc), result2.items[1].CreatedAt);
+
 
         }
     }
