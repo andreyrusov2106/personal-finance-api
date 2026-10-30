@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using PersonalFinance.Application.DTOs;
 using PersonalFinance.Application.Tasks.Commands;
 using PersonalFinance.Application.Tasks.Queries;
+using PersonalFinance.Domain.Enums;
 
 namespace PersonalFinanceApi.Controllers
 {
@@ -145,10 +146,15 @@ namespace PersonalFinanceApi.Controllers
         [Authorize]
         [HttpGet("/api/accounts/{accountId}/history")]
         public async Task<ActionResult> GetHistory(
-        Guid accountId, [FromQuery] int page =1, [FromQuery] int pageSize =20)
+        Guid accountId, 
+        [FromQuery] int page =1,
+        [FromQuery] int pageSize =20, 
+        [FromQuery] OperationType? type = null, 
+        [FromQuery] DateTime? from = null,
+        [FromQuery] DateTime? to = null)
         {
             var command = new GetHistoryQuery(
-                accountId, page, pageSize);
+                accountId, page, pageSize, type, from, to);
 
             var history = await _mediator.Send(command);
 

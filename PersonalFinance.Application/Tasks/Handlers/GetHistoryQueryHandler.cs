@@ -31,7 +31,11 @@ namespace PersonalFinance.Application.Tasks.Handlers
             if(request.page<1 ||
                 (request.pageSize<1 || request.pageSize >100))
             {
-                throw new InvalidPaginationParametersException();
+                throw new InvalidParametersException();
+            }
+            if (request.from.HasValue && request.to.HasValue && request.from.Value.Date > request.to.Value.Date)
+            {
+                throw new InvalidParametersException();
             }
             var account = await _accountRepository.GetAccountAsync(request.accountId, _currentUser.UserId);
             if (account == null)
@@ -39,7 +43,14 @@ namespace PersonalFinance.Application.Tasks.Handlers
 
             
             int skip=(request.page - 1)*request.pageSize;
-            var transactions = await _historyRepository.GetHistoryByAccountIdAsync(_currentUser.UserId, request.accountId, skip, request.pageSize, cancellationToken);
+            var transactions = await _historyRepository.GetHistoryByAccountIdAsync(_currentUser.UserId,
+                request.accountId, 
+                skip, 
+                request.pageSize, 
+                cancellationToken,
+                request.type,
+                request.from,
+                request.to);
             List<HistoryDto> historyDtos = new List<HistoryDto>();
 
             foreach (var transaction in transactions.Items) {

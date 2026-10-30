@@ -4,9 +4,9 @@ using System.Text;
 
 namespace PersonalFinance.Application.Exceptions
 {
-    public class InvalidPaginationParametersException:Exception
+    public class InvalidParametersException:Exception
     {
-        public InvalidPaginationParametersException()
+        public InvalidParametersException()
         : base($"Invalid pagination parameters")
         {
         }

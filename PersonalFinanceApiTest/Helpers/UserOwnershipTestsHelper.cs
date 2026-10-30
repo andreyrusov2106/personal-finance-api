@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 using PersonalFinance.Application.DTOs;
 using PersonalFinance.Domain;
+using PersonalFinance.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -95,15 +96,23 @@ namespace PersonalFinanceApiTest.Helpers
         }
 
 
-        public async Task<List<HistoryDto>> GetHistoryAsync(HttpClient clientA, Guid accountId)
+        public async Task<PaginationHistoryDto> GetHistoryAsync(HttpClient clientA, 
+            Guid accountId, 
+            int page, 
+            int pageSize,
+            OperationType? type = null,
+            DateTime? from = null,
+            DateTime? to = null)
         {
             var responseGetHistory = await clientA.GetAsync(
-              $"api/accounts/{accountId}/history"
+              $"api/accounts/{accountId}/history?page={page}" +
+              $"&pageSize={pageSize}" +
+              $"&type={type}&from={from}&to={to}"
             );
 
             Assert.AreEqual(HttpStatusCode.OK, responseGetHistory.StatusCode);
 
-            var history = await responseGetHistory.Content.ReadFromJsonAsync<List<HistoryDto>>();
+            var history = await responseGetHistory.Content.ReadFromJsonAsync<PaginationHistoryDto>();
 
             Assert.IsNotNull(history);
 
