@@ -177,7 +177,7 @@ namespace PersonalFinanceApiTest
 
 
         [TestMethod]
-        public async Task Check_Operation_Dates_Near_Midnight()
+        public async Task History_Date_Filter_Should_Include_End_Date_And_Exclude_Next_Day()
         {
             // ARRANGE (Подготовка)
             var options = new DbContextOptionsBuilder<AppDbContext>()
@@ -188,7 +188,6 @@ namespace PersonalFinanceApiTest
             var context = new AppDbContext(options);
             var accountRepository = new AccountRepository(context);
             var operationHistoryRepository = new OperationHistoryRepository(context);
-            var service = new OperationHistoryService(context);
             var currency = new Currency("RUB", 123);
             var user = new User("test", "Test User");
 
@@ -239,7 +238,7 @@ namespace PersonalFinanceApiTest
             var result1 = await handler.Handle(
                  new GetHistoryQuery(account.Id, 1,20,
                  OperationType.Deposit, 
-                 new DateTime(2026, 10, 29, 00, 00, 0, DateTimeKind.Utc), 
+                 new DateTime(2026, 10, 30, 00, 00, 0, DateTimeKind.Utc), 
                  new DateTime(2026, 10, 30, 00, 00, 0, DateTimeKind.Utc)),
                  CancellationToken.None);
 

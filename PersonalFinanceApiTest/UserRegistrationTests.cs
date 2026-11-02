@@ -125,7 +125,7 @@ namespace PersonalFinanceApiTest
         public async Task RegisterEndpoint_Should_Return_201()
         {
             // ARRANGE(Подготовка)
-            WebApplicationFactory<Program> webApplicationFactory = new WebApplicationFactory<Program>();
+            WebApplicationFactory<Program> webApplicationFactory = new CustomWebApplicationFactory();
             
            
 
