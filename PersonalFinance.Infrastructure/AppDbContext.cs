@@ -97,7 +97,7 @@ namespace PersonalFinance.Infrastructure
             modelBuilder.Entity<Transaction>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                entity.Property(e => e.Amount).IsRequired();
+                entity.Property(e => e.Amount).HasPrecision(10, 2).IsRequired();
 
                 entity.HasOne<Account>(t => t.Account)
                   .WithMany()
