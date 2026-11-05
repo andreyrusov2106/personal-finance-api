@@ -34,7 +34,8 @@ namespace PersonalFinance.Domain
 
         public void Deposit(decimal Amount)
         {
-            if (Amount <= 0)
+            var roundedAmmount = decimal.Round(Amount, 2);
+            if (Amount <= 0 || roundedAmmount != Amount )
             {
                 throw new InvalidDepositAmountException(Amount);
             }
@@ -42,17 +43,19 @@ namespace PersonalFinance.Domain
             {
                 throw new AccountAlreadyClosedException(Name);
             }
+            if((Balance + Amount) > 99999999.99m)
+            {
+                throw new AccountBalanceExceededException();
+            }
             Balance += Amount;
         }
 
-        private decimal ConvertToCurrency(decimal sum, Currency currency1, Currency currency2)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         public void Withdraw(decimal Amount)
         {
-            if (Amount <= 0)
+            var roundedAmmount = decimal.Round(Amount, 2);
+            if (Amount <= 0 || roundedAmmount!=Amount)
             {
                 throw new InvalidWithdrawAmountException(Amount);
             }
@@ -67,6 +70,10 @@ namespace PersonalFinance.Domain
 
 
             Balance -= Amount;
+        }
+        private decimal ConvertToCurrency(decimal sum, Currency currency1, Currency currency2)
+        {
+            throw new NotImplementedException();
         }
         public void Close()
         {
