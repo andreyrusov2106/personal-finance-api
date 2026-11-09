@@ -10,7 +10,12 @@ namespace PersonalFinance.Application.DTOs
         [NotEmptyGuid]
         Guid ToAccountId,
 
-        [Range(typeof(decimal), "0.01", "99999999.99")]
+        [property: Range(
+        typeof(decimal),
+        "0.01",
+        "99999999.99",
+        ParseLimitsInInvariantCulture = true,
+        ConvertValueInInvariantCulture = true)]
         decimal Amount
 );
 }
