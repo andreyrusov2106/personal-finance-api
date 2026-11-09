@@ -136,7 +136,8 @@ namespace PersonalFinance.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("numeric");
+                        .HasPrecision(10, 2)
+                        .HasColumnType("numeric(10,2)");
 
                     b.Property<Guid>("OperationId")
                         .HasColumnType("uuid");

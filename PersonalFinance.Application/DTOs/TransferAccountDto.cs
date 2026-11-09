@@ -10,7 +10,7 @@ namespace PersonalFinance.Application.DTOs
         [NotEmptyGuid]
         Guid ToAccountId,
 
-        [property: Range(
+        [Range(
         typeof(decimal),
         "0.01",
         "99999999.99",

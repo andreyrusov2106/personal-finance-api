@@ -3,7 +3,7 @@
 namespace PersonalFinance.Application.DTOs
 {
     public record DepositAccountDto(
-    [property: Range(
+    [ Range(
         typeof(decimal), 
         "0.01", 
         "99999999.99",
