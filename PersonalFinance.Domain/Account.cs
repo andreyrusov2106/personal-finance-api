@@ -71,10 +71,6 @@ namespace PersonalFinance.Domain
 
             Balance -= Amount;
         }
-        private decimal ConvertToCurrency(decimal sum, Currency currency1, Currency currency2)
-        {
-            throw new NotImplementedException();
-        }
         public void Close()
         {
             if (ClosedAt != null)
