@@ -61,17 +61,18 @@ namespace PersonalFinanceApiTest
             var transactions = context.Transactions.ToList();
             var operations = context.Operations.ToList();
 
+            var transactionFrom = transactions.Single(t => t.AccountId == firstAccount.Id);
+            var transactionTo = transactions.Single(t => t.AccountId == secondAccount.Id);
+
 
             // ASSERT (Проверка)
             Assert.AreEqual(900, firstAccountAfterTransfer.Balance);
             Assert.AreEqual(1100, secondAccountAfterTransfer.Balance);
             Assert.AreEqual(2, transactions.Count);
-            Assert.AreEqual(100, transactions[0].Amount);
-            Assert.AreEqual(-100, transactions[1].Amount);
-            Assert.AreEqual(secondAccount.Id, transactions[0].AccountId);
-            Assert.AreEqual(firstAccount.Id, transactions[1].AccountId);
-            Assert.AreEqual(operations[0].Id, transactions[0].OperationId);
-            Assert.AreEqual(operations[0].Id, transactions[1].OperationId);
+            Assert.AreEqual(100, transactionTo.Amount);
+            Assert.AreEqual(-100, transactionFrom.Amount);
+            Assert.AreEqual(operations[0].Id, transactionTo.OperationId);
+            Assert.AreEqual(operations[0].Id, transactionFrom.OperationId);
             Assert.AreEqual(1, operations.Count);
             Assert.AreEqual(OperationType.Transfer, operations[0].Type);
 
