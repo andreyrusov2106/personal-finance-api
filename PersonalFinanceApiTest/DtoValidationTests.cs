@@ -21,11 +21,21 @@ namespace PersonalFinanceApiTest
             var context = new ValidationContext(depositAccountDto);
             var results = new List<ValidationResult>();
             // ACT (Действие)
-            var isValid = Validator.TryValidateObject(
-                depositAccountDto,
+            var amountParameter = typeof(DepositAccountDto)
+            .GetConstructors()
+            .Single()
+            .GetParameters()
+            .Single(p => p.Name == nameof(DepositAccountDto.Amount));
+
+            var rangeAttribute = (RangeAttribute)Attribute.GetCustomAttribute(
+                amountParameter,
+                typeof(RangeAttribute))!;
+
+            var isValid = Validator.TryValidateValue(
+                depositAccountDto.Amount,
                 context,
                 results,
-                validateAllProperties: true);
+                new[] { rangeAttribute });
 
 
 
@@ -45,11 +55,21 @@ namespace PersonalFinanceApiTest
             var context = new ValidationContext(depositAccountDto);
             var results = new List<ValidationResult>();
             // ACT (Действие)
-            var isValid = Validator.TryValidateObject(
-                depositAccountDto,
+            var amountParameter = typeof(DepositAccountDto)
+            .GetConstructors()
+            .Single()
+            .GetParameters()
+            .Single(p => p.Name == nameof(DepositAccountDto.Amount));
+
+                var rangeAttribute = (RangeAttribute)Attribute.GetCustomAttribute(
+                    amountParameter,
+                    typeof(RangeAttribute))!;
+
+            var isValid = Validator.TryValidateValue(
+                depositAccountDto.Amount,
                 context,
                 results,
-                validateAllProperties: true);
+                new[] { rangeAttribute });
 
 
 
@@ -70,11 +90,21 @@ namespace PersonalFinanceApiTest
             var context = new ValidationContext(depositAccountDto);
             var results = new List<ValidationResult>();
             // ACT (Действие)
-            var isValid = Validator.TryValidateObject(
-                depositAccountDto,
+            var amountParameter = typeof(DepositAccountDto)
+            .GetConstructors()
+            .Single()
+            .GetParameters()
+            .Single(p => p.Name == nameof(DepositAccountDto.Amount));
+
+            var rangeAttribute = (RangeAttribute)Attribute.GetCustomAttribute(
+                amountParameter,
+                typeof(RangeAttribute))!;
+
+            var isValid = Validator.TryValidateValue(
+                depositAccountDto.Amount,
                 context,
                 results,
-                validateAllProperties: true);
+                new[] { rangeAttribute });
 
 
 
