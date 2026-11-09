@@ -15,7 +15,7 @@ namespace PersonalFinanceApiTest
     public class GetHistoryQueryHandlerTests
     {
         [TestMethod]
-        public async Task After_Deposit_History_Shoud_Have_One_Transaction_Deposit()
+        public async Task After_Deposit_History_Should_Have_One_Incoming_Transaction()
         {
             // ARRANGE(Подготовка)
             CustomWebApplicationFactory webApplicationFactory = new CustomWebApplicationFactory();
@@ -220,7 +220,7 @@ namespace PersonalFinanceApiTest
         }
 
         [TestMethod]
-        public async Task After_5Deposit_History_With_Pagination2_Shoud_Have_3Pages()
+        public async Task History_With_5_Deposits_And_Page_Size_2_Should_Have_3_Pages()
         {
             // ARRANGE(Подготовка)
             CustomWebApplicationFactory webApplicationFactory = new CustomWebApplicationFactory();
@@ -289,7 +289,7 @@ namespace PersonalFinanceApiTest
         }
 
         [TestMethod]
-        public async Task After_5Deposit_History_With_Pagination2_Shoud_Have_5Different_Transactions()
+        public async Task History_With_5_Deposits_And_Page_Size_2_Should_Return_5_Different_Transactions()
         {
             // ARRANGE(Подготовка)
             CustomWebApplicationFactory webApplicationFactory = new CustomWebApplicationFactory();

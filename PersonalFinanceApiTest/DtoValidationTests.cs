@@ -36,7 +36,7 @@ namespace PersonalFinanceApiTest
         }
 
         [TestMethod]
-        public void DepositAccountDto_Should_Not_RejectBiggestPosibleAmmount()
+        public void DepositAccountDto_Is_Valid_With_Amount_99_999_999()
         {
             // ARRANGE (Подготовка)
 
@@ -61,7 +61,7 @@ namespace PersonalFinanceApiTest
 
 
         [TestMethod]
-        public void DepositAccountDto_Should_Not_RejectAmountBiggestAmmount()
+        public void DepositAccountDto_Is_Not_Valid_With_Amount_100_000_00()
         {
             // ARRANGE (Подготовка)
 

@@ -19,7 +19,7 @@ namespace PersonalFinanceApiTest
     public class HistoryTests
     {
         [TestMethod]
-        public async Task Success_Transfer_100_From_One_Account_To_Another_History_Shoud_Have_One_Operation_And_Two_Transaction()
+        public async Task Success_Transfer_100_From_One_Account_To_Another_History_Should_Have_One_Operation_And_Two_Transactions()
         {
             // ARRANGE (Подготовка)
             var options = new DbContextOptionsBuilder<AppDbContext>()
@@ -79,7 +79,7 @@ namespace PersonalFinanceApiTest
         }
 
         [TestMethod]
-        public async Task Success_Deposit_100_History_Shoud_Have_One_Operation_And_One_Transaction()
+        public async Task Success_Deposit_100_History_Should_Have_One_Operation_And_One_Transaction()
         {
             // ARRANGE (Подготовка)
             var options = new DbContextOptionsBuilder<AppDbContext>()
@@ -127,7 +127,7 @@ namespace PersonalFinanceApiTest
         }
 
         [TestMethod]
-        public async Task Success_Withdrawal_100_History_Shoud_Have_One_Operation_And_One_Transaction()
+        public async Task Success_Withdrawal_100_History_Should_Have_One_Operation_And_One_Transaction()
         {
             // ARRANGE (Подготовка)
             var options = new DbContextOptionsBuilder<AppDbContext>()

@@ -108,7 +108,7 @@ namespace PersonalFinanceApiTest
             context.Users.Add(user);
 
 
-            var firstAccount = new Account("fist", currency, user.Id);
+            var firstAccount = new Account("first", currency, user.Id);
             context.Accounts.Add(firstAccount);
             var secondAccount = new Account("second", currency, user.Id);
             context.Accounts.Add(secondAccount);
@@ -139,7 +139,7 @@ namespace PersonalFinanceApiTest
         }
 
         [TestMethod]
-        public async Task Not_Enough_Money_For_Transfer_Balace_Should_Be_The_Same()
+        public async Task Transfer_Should_Keep_Balances_Unchanged_When_Insufficient_Funds()
         { // ARRANGE (Подготовка)
           var options = new DbContextOptionsBuilder<AppDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
@@ -151,7 +151,7 @@ namespace PersonalFinanceApiTest
             var user = new User("test", "Test User");
 
             context.Users.Add(user);
-            var firstAccount = new Account("fist", currency, user.Id); 
+            var firstAccount = new Account("first", currency, user.Id); 
             context.Accounts.Add(firstAccount); 
             var secondAccount = new Account("second", currency, user.Id); 
             context.Accounts.Add(secondAccount); 
@@ -171,7 +171,7 @@ namespace PersonalFinanceApiTest
         }
 
             [TestMethod]
-        public async Task Unsuccess_Transfer_For_Two_The_Same_Ids()
+        public async Task Transfer_Should_Throw_When_Accounts_Are_The_Same()
         {
             // ARRANGE (Подготовка)
             var options = new DbContextOptionsBuilder<AppDbContext>()
@@ -186,7 +186,7 @@ namespace PersonalFinanceApiTest
             var user = new User("test", "Test User");
 
             context.Users.Add(user);
-            var firstAccount = new Account("fist", currency, user.Id);
+            var firstAccount = new Account("first", currency, user.Id);
             context.Accounts.Add(firstAccount);
 
 
@@ -212,7 +212,7 @@ namespace PersonalFinanceApiTest
         }
 
         [TestMethod]
-        public async Task Unsuccess_Transfer_With_Amount_Less_Than_Zero()
+        public async Task Transfer_Should_Throw_When_Amount_Is_Negative()
         {
             // ARRANGE (Подготовка)
             var options = new DbContextOptionsBuilder<AppDbContext>()
@@ -227,7 +227,7 @@ namespace PersonalFinanceApiTest
             var user = new User("test", "Test User");
 
             context.Users.Add(user);
-            var firstAccount = new Account("fist", currency, user.Id);
+            var firstAccount = new Account("first", currency, user.Id);
             context.Accounts.Add(firstAccount);
             var secondAccount = new Account("second", currency, user.Id);
             context.Accounts.Add(secondAccount);
@@ -261,7 +261,7 @@ namespace PersonalFinanceApiTest
         }
 
         [TestMethod]
-        public async Task Unsuccess_Transfer_With_Amount_Equals_Zero()
+        public async Task Transfer_Should_Throw_When_Amount_Is_Zero()
         {
             // ARRANGE (Подготовка)
             var options = new DbContextOptionsBuilder<AppDbContext>()
@@ -276,7 +276,7 @@ namespace PersonalFinanceApiTest
             var user = new User("test", "Test User");
 
             context.Users.Add(user);
-            var firstAccount = new Account("fist", currency, user.Id);
+            var firstAccount = new Account("first", currency, user.Id);
             context.Accounts.Add(firstAccount);
             var secondAccount = new Account("second", currency, user.Id);
             context.Accounts.Add(secondAccount);
@@ -310,7 +310,7 @@ namespace PersonalFinanceApiTest
         }
 
         [TestMethod]
-        public async Task Unsuccess_Transfer_With_Not_Found_First_Account()
+        public async Task Transfer_Should_Throw_When_Source_Account_Does_Not_Exist()
         {
             // ARRANGE (Подготовка)
             var options = new DbContextOptionsBuilder<AppDbContext>()
@@ -352,7 +352,7 @@ namespace PersonalFinanceApiTest
         }
 
         [TestMethod]
-        public async Task Unsuccess_Transfer_With_Not_Found_Second_Account()
+        public async Task Transfer_Should_Throw_When_Destination_Account_Does_Not_Exist()
         {
             // ARRANGE (Подготовка)
             var options = new DbContextOptionsBuilder<AppDbContext>()

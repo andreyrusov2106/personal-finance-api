@@ -54,7 +54,7 @@ namespace PersonalFinanceApiTest
         }
 
         [TestMethod]
-        public async Task LoginCommandHandler_Should_Throw_InvalidCredentionalsException()
+        public async Task LoginCommandHandler_Should_Throw_InvalidCredentialsException()
         {
             // ARRANGE(Подготовка)
             var options = new DbContextOptionsBuilder<AppDbContext>()
@@ -74,9 +74,9 @@ namespace PersonalFinanceApiTest
 
             RegisterRequestDto registerRequestDto = new RegisterRequestDto("testuser1", "Secret123!", "Test User");
 
-            RegisterCommand redisterCommand = new RegisterCommand(registerRequestDto);
+            RegisterCommand registerCommand = new RegisterCommand(registerRequestDto);
 
-            await registerCommandHandler.Handle(redisterCommand, CancellationToken.None);
+            await registerCommandHandler.Handle(registerCommand, CancellationToken.None);
 
 
             LoginCommandHandler loginCommandHandler = new LoginCommandHandler(tokenService, userRepository, passwordHasher);
@@ -115,9 +115,9 @@ namespace PersonalFinanceApiTest
 
             RegisterRequestDto registerRequestDto = new RegisterRequestDto("testuser2", "Secret123!", "Test User");
 
-            RegisterCommand redisterCommand = new RegisterCommand(registerRequestDto);
+            RegisterCommand registerCommand = new RegisterCommand(registerRequestDto);
 
-            await registerCommandHandler.Handle(redisterCommand, CancellationToken.None);
+            await registerCommandHandler.Handle(registerCommand, CancellationToken.None);
 
             LoginCommandHandler loginCommandHandler = new LoginCommandHandler(tokenService, userRepository, passwordHasher);
 
