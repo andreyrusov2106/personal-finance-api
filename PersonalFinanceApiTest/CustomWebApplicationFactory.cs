@@ -13,7 +13,7 @@ namespace PersonalFinanceApiTest
 {
     public class CustomWebApplicationFactory : WebApplicationFactory<Program>
     {
-        protected override void ConfigureWebHost(IWebHostBuilder builder)
+        protected override void  ConfigureWebHost(IWebHostBuilder builder)
         {
             var configuration = new ConfigurationBuilder()
                 .AddUserSecrets<Program>()
