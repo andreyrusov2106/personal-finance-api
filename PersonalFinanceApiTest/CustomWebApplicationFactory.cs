@@ -17,6 +17,7 @@ namespace PersonalFinanceApiTest
         {
             var configuration = new ConfigurationBuilder()
                 .AddUserSecrets<Program>()
+                .AddEnvironmentVariables()
                 .Build();
 
             builder.ConfigureServices(services =>
