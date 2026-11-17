@@ -12,6 +12,21 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: personal_finance
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -29,3 +44,13 @@ jobs:
 
       - name: Test
         run: dotnet test PersonalFinanceApi.slnx --configuration Release --no-build
+        env:
+          ConnectionStrings__TestConnection: "Host=localhost;Port=5432;Database=personal_finance;Username=postgres;Password=postgres"
+      - name: Publish
+        run: dotnet publish PersonalFinanceApi/PersonalFinanceApi.csproj --configuration Release --no-build --output ./publish
+        
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: personal-finance-api
+          path: ./publish
