@@ -28,7 +28,7 @@ namespace PersonalFinanceApiTest
                 .Options;
             PasswordHasher<User> passwordHasher = new PasswordHasher<User>();
             ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-            configurationBuilder.AddUserSecrets<Program>();
+            configurationBuilder.AddUserSecrets<Program>().AddEnvironmentVariables();
             IConfiguration configuration = configurationBuilder.Build();
 
             var context = new AppDbContext(options);
@@ -62,7 +62,7 @@ namespace PersonalFinanceApiTest
                 .Options;
             PasswordHasher<User> passwordHasher = new PasswordHasher<User>();
             ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-            configurationBuilder.AddUserSecrets<Program>();
+            configurationBuilder.AddUserSecrets<Program>().AddEnvironmentVariables();
             IConfiguration configuration = configurationBuilder.Build();
 
 
@@ -105,7 +105,7 @@ namespace PersonalFinanceApiTest
                 .Options;
             PasswordHasher<User> passwordHasher = new PasswordHasher<User>();
             ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-            configurationBuilder.AddUserSecrets<Program>();
+            configurationBuilder.AddUserSecrets<Program>().AddEnvironmentVariables();
             IConfiguration configuration = configurationBuilder.Build();
 
             var context = new AppDbContext(options);
