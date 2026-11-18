@@ -1,3 +1,4 @@
+
 name: CI
 
 on:
@@ -47,9 +48,23 @@ jobs:
         env:
           ConnectionStrings__TestConnection: "Host=localhost;Port=5432;Database=personal_finance;Username=postgres;Password=postgres"
           Jwt__Key: "ci-test-key-must-be-at-least-32-characters-long"
+
       - name: Publish
         run: dotnet publish PersonalFinanceApi/PersonalFinanceApi.csproj --configuration Release --no-build --output ./publish
-        
+
+      - name: Install EF Core tools
+        run: dotnet tool install --global dotnet-ef --version 10.0.12
+
+      - name: Create migration bundle
+        run: |
+          dotnet ef migrations bundle \
+            --project PersonalFinance.Infrastructure \
+            --startup-project PersonalFinanceApi \
+            --configuration Release \
+            --self-contained \
+            --target-runtime linux-x64 \
+            --output ./publish/efbundle
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
